@@ -1,4 +1,4 @@
---
+--Database Table Creation
 
 --Check for pre-existing table, build if none exist
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'User_Table')
@@ -27,14 +27,14 @@ ELSE
     BEGIN
 	PRINT 'Balance Table Building'
 	CREATE TABLE Balance_Table(
-		bidID int not null primary key,
+		ID int not null primary key,
 
 		--should delete all records from a given user if userID is deleted
 		userID int not null foreign key references User_Table(userID) on delete cascade, 
 		reason varchar(128));
 
 	--should make retrieving data by userID faster
-	CREATE INDEX IDX_Balance_UserID ON Balance_Table(userID);
+	CREATE INDEX BalanceIndexByUserID ON Balance_Table(userID);
 	END
 
 
@@ -47,7 +47,25 @@ ELSE
 	BEGIN
 	PRINT 'Result Table Building'
 	CREATE TABLE Result_Table(
-		resultID smallint primary key not null,
+		gameID smallint primary key not null,
 		outcome smallint not null, --0 for loss, 1 for win, -1 for tie
 		userID int not null foreign key references User_Table(userID));
+	END
+
+
+	--Check for pre-existing table, build if none exist
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Bet_Table')
+	BEGIN
+	PRINT 'Bet Table Loaded'
+	END
+ELSE
+	BEGIN
+	PRINT 'Bet Table Building'
+	CREATE TABLE Bet_Table(
+		gameID smallint not null foreign key references Result_table(gameID),
+		userID int not null foreign key references User_Table(userID),
+		betAmount int not null,
+		betOutcome smallint not null
+	);
+	CREATE INDEX betIndexByUserID ON Bet_Table(userID);
 	END
