@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\wysoc\\source\\repos\\CardGames\\CardGames.csproj",
+      "projectUniqueName": "C:\\Users\\wysoc\\source\\repos\\card-game-361\\CardGames.csproj",
       "projectName": "CardGames",
-      "projectPath": "C:\\Users\\wysoc\\source\\repos\\CardGames\\CardGames.csproj",
+      "projectPath": "C:\\Users\\wysoc\\source\\repos\\card-game-361\\CardGames.csproj",
       "packagesPath": "C:\\Users\\wysoc\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\wysoc\\source\\repos\\CardGames\\obj\\",
+      "outputPath": "C:\\Users\\wysoc\\source\\repos\\card-game-361\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\wysoc\\AppData\\Roaming\\NuGet\\NuGet.Config",

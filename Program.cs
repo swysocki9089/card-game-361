@@ -1,12 +1,16 @@
-﻿namespace CardGames
+﻿using CardGame.Model;
+using CardGames.Model;
+using static CardGames.Model.Constants.StandardConstants; // suits and values can be referenced directly
+
+
+namespace CardGames
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
-            Card c = new Card(1, 0);
-            Console.WriteLine(c.getFullCardName());
+            StandardCard sc = new StandardCard(ace, spades);
+            Console.WriteLine(sc.GetFullName());
         }
     }
 }

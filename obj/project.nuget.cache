@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BQTl2Ql1JB95O2Y9BxeRejSHVwS81K6lxyu4KHdOlV86hoB084yOzwOqa1xFSW9+Sj461hwqnaE5+PFuhxfRcA==",
+  "dgSpecHash": "uDfNu6ORAJJc+S3zIvOHoe9PIHFEvBUg3AFi9qTdglzcxQEbyTFfJcQH7k5Ctgz2Wgh9RQPz0QHUaip6ZKxzFw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\wysoc\\source\\repos\\CardGames\\CardGames.csproj",
+  "projectFilePath": "C:\\Users\\wysoc\\source\\repos\\card-game-361\\CardGames.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

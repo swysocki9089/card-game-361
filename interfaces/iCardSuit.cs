@@ -4,6 +4,6 @@ namespace CardGames.Interfaces
     public interface iCardSuit
     {
         string Name { get; }
-        string id { get; }
+        int id { get; }
     }
 }
