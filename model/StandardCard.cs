@@ -1,7 +1,7 @@
 ﻿using System;
 using CardGames.Interfaces;
 
-namespace CardGame.Model
+namespace CardGames.Model
 {
 	public class StandardCard : iCard
 	{

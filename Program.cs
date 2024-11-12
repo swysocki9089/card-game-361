@@ -1,5 +1,4 @@
-﻿using CardGame.Model;
-using CardGames.Model;
+﻿using CardGames.Model;
 using static CardGames.Model.Constants.StandardConstants; // suits and values can be referenced directly
 
 
