@@ -7,7 +7,7 @@ FUNCTIONAL WEBSITE (REACT FRONTEND)
   
 DEFINE CLASSES AND INTERFACES (C# MIDDLEWARE)
 - ~~Card~~
-- Deck
+- ~~Deck~~
 - Game
 - User
 - Bet 
