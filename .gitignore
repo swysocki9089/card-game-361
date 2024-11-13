@@ -2,6 +2,7 @@
 .vs/
 .vscode/
 .idea/
+*.vsidx
 
 # User-specific settings
 *.user
@@ -72,7 +73,3 @@ TestResults/
 # ASP.NET MVC
 Generated\_Code/
 Web.config
-.vs/CardGames/FileContentIndex/101c9813-c5d7-4630-a564-60c92657f0a4.vsidx
-*.vsidx
-*.vsidx
-.vs/CardGames/v17/.suo
