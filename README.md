@@ -10,7 +10,9 @@ DEFINE CLASSES AND INTERFACES (C# MIDDLEWARE)
 - ~~Deck~~
 - Game
 - User
-- Bet 
+- Bet
+
+  Expand Unit Tests and Implement CI
 
 ~~MAKE RELEVANT TABLES (SQL)~~
 Create C# Accessors to DB
