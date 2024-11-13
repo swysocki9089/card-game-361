@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CardGames.Model.Constants
+namespace CardGames.Models.Constants
 {
-    public class StandardConstants
+    public static class StandardCardConstants
     {
         public static StandardValue ace = new StandardValue("Ace", 1);
         public static StandardValue two = new StandardValue("2", 2);
