@@ -1,15 +1,23 @@
-// components/Login.jsx
 import React, { useState } from 'react';
-import './Login.css';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleLogin = (event) => {
         event.preventDefault();
         // Placeholder for the API call
         console.log('Logging in with:', { username, password });
+
+        if (username === 'admin' && password === 'admin') {
+            console.log('Login successful');
+            navigate('/');
+        } else {
+            console.log('Invalid credentials');
+            alert('Invalid username or password');
+        }
     };
 
     return (
