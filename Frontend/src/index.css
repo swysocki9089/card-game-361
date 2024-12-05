@@ -1,5 +1,6 @@
 /* index.css */
 
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -7,6 +8,11 @@ body {
     background-color: #f4f4f4;
 }
 
+h1 {
+    text-align: center;
+}
+
+/* Header Styles */
 header {
     background-color: #333;
     color: white;
@@ -29,10 +35,12 @@ nav ul li a {
     text-decoration: none;
 }
 
+/* Main Content Styles */
 main {
     padding: 2rem;
 }
 
+/* Login Container Styles */
 .login-container {
     max-width: 400px;
     margin: 2rem auto;
@@ -45,7 +53,6 @@ main {
 
 .login-container h2 {
     margin-bottom: 1rem;
-    text-align: center;
 }
 
 .login-container form {
@@ -76,4 +83,59 @@ main {
 
 .login-container form button:hover {
     background-color: #555;
+}
+
+/* Game Area Styles */
+.game-area {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.tableau {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+}
+
+.tableau-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 5px;
+}
+
+.card {
+    width: 50px;
+    height: 70px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    background-color: #fff;
+}
+
+.card.flipped {
+    background-color: #f0f0f0;
+}
+
+.stock-waste {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.stock-pile, .waste-pile {
+    width: 50px;
+    height: 70px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    background-color: #fff;
 }
