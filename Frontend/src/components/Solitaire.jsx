@@ -1,5 +1,4 @@
-﻿// components/KlondikeSolitaire.jsx
-import React, { useReducer, useEffect, useCallback } from 'react';
+﻿import React, { useReducer, useEffect, useCallback } from 'react';
 import { createDeck } from '../utils/deck';
 import { shuffleDeck } from '../utils/shuffle';
 
@@ -22,19 +21,26 @@ const gameReducer = (state, action) => {
                 deck: action.payload.deck,
                 tableau: action.payload.tableau,
                 stockPile: action.payload.stockPile,
+                wastePile: [],
                 gameStatus: 'IN_PROGRESS'
             };
         case 'DRAW_CARD':
-            if (state.stockPile.length === 0) {
-                return state;
+            if (state.stockPile.length > 0) {
+                const newStockPile = [...state.stockPile];
+                const drawnCard = newStockPile.pop();
+                return {
+                    ...state,
+                    stockPile: newStockPile,
+                    wastePile: [...state.wastePile, { ...drawnCard, isFlipped: true }]
+                };
+            } else {
+                //reset the stock from the waste pile
+                return {
+                    ...state,
+                    stockPile: [...state.wastePile].reverse().map(card => ({ ...card, isFlipped: false })),
+                    wastePile: []
+                };
             }
-            const newStockPile = [...state.stockPile];
-            const drawnCard = newStockPile.pop();
-            return {
-                ...state,
-                stockPile: newStockPile,
-                wastePile: [...state.wastePile, drawnCard]
-            };
         default:
             return state;
     }
@@ -66,6 +72,10 @@ const Solitaire = () => {
         initializeGame();
     }, [initializeGame]);
 
+    const drawCard = () => {
+        dispatch({ type: 'DRAW_CARD' });
+    };
+
     return (
         <div>
             <h1>Klondike Solitaire</h1>
@@ -82,15 +92,17 @@ const Solitaire = () => {
                     ))}
                 </div>
                 <div className="stock-waste">
-                    <div className="stock-pile">
-                        {state.stockPile.length > 0 ? '🂠' : 'Empty'}
+                    <div className="stock-pile" onClick={drawCard}>
+                        {state.stockPile.length > 0 ? '🂠' : 'Reset Stock'}
                     </div>
                     <div className="waste-pile">
-                        {state.wastePile.map((card, index) => (
-                            <div key={index} className="card">
-                                {`${card.value}${card.suit}`}
+                        {state.wastePile.length > 0 ? (
+                            <div className="card">
+                                {`${state.wastePile[state.wastePile.length - 1].value}${state.wastePile[state.wastePile.length - 1].suit}`}
                             </div>
-                        ))}
+                        ) : (
+                            <div className="card empty">Empty</div>
+                        )}
                     </div>
                 </div>
             </div>
