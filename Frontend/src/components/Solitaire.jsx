@@ -1,6 +1,6 @@
 ﻿import React, { useReducer, useEffect, useCallback } from 'react';
-import { createDeck } from '../utils/deck'; 
-import { shuffleDeck } from '../utils/shuffle'; 
+import { createDeck } from '../utils/deck';
+import { shuffleDeck } from '../utils/shuffle';
 
 //initial game state
 const initialState = {
@@ -14,7 +14,7 @@ const initialState = {
     gameStatus: 'NOT_STARTED' //game status (unimplemented)
 };
 
-/**reducer function to handle game state transitions. 
+/**reducer function to handle game state transitions.
  */
 const gameReducer = (state, action) => {
     switch (action.type) {
@@ -33,7 +33,7 @@ const gameReducer = (state, action) => {
             //allows cards to be drawn from stockpile
             if (state.stockPile.length > 0) {
                 const newStockPile = [...state.stockPile];
-                const drawnCard = newStockPile.pop(); 
+                const drawnCard = newStockPile.pop();
                 return {
                     ...state,
                     stockPile: newStockPile,
@@ -53,7 +53,7 @@ const gameReducer = (state, action) => {
     }
 };
 
-/**main solitaire component to manage the game state and render the UI 
+/**main solitaire component to manage the game state and render the UI
  */
 const Solitaire = () => {
     //manage the game state using the useReducer function
@@ -61,7 +61,7 @@ const Solitaire = () => {
 
     //initialize the game by creating a shuffled deck and dealing cards to the tableau area
     const initializeGame = useCallback(() => {
-        const newDeck = shuffleDeck(createDeck()); 
+        const newDeck = shuffleDeck(createDeck());
         const newTableau = Array(7)
             .fill()
             .map((_, i) =>
@@ -98,6 +98,21 @@ const Solitaire = () => {
         <div>
             <h1>Klondike Solitaire</h1>
             <div className="game-area">
+                {/* Foundation area */}
+                <div className="foundation">
+                    {Object.keys(state.foundation).map((suit) => (
+                        <div key={suit} className="foundation-pile">
+                            {state.foundation[suit].length > 0 ? (
+                                <div className="card">
+                                    {`${state.foundation[suit][state.foundation[suit].length - 1].value}${suit}`}
+                                </div>
+                            ) : (
+                                <div className="card empty">Empty</div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+
                 {/* Tableau area */}
                 <div className="tableau">
                     {state.tableau.map((column, columnIndex) => (
