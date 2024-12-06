@@ -21,7 +21,6 @@ const initialState = {
 const gameReducer = (state, action) => {
     switch (action.type) {
         case 'INITIALIZE_GAME': {
-            //initialize the game with a shuffled deck and tableau area
             return {
                 ...state,
                 deck: action.payload.deck,
@@ -32,7 +31,6 @@ const gameReducer = (state, action) => {
             };
         }
         case 'DRAW_CARD': {
-            //allows cards to be drawn from stockpile
             if (state.stockPile.length > 0) {
                 const newStockPile = [...state.stockPile];
                 const drawnCard = newStockPile.pop();
@@ -42,7 +40,6 @@ const gameReducer = (state, action) => {
                     wastePile: [...state.wastePile, { ...drawnCard, isFlipped: true }]
                 };
             } else {
-                //resets the stockpile when it is empty
                 return {
                     ...state,
                     stockPile: [...state.wastePile].reverse().map(card => ({ ...card, isFlipped: false })),
@@ -54,14 +51,15 @@ const gameReducer = (state, action) => {
             const { item, toColumnIndex, toFoundationSuit } = action.payload;
             const { card, index, columnIndex } = item;
 
-            //moving card within tableau
             if (toColumnIndex !== undefined && Array.isArray(state.tableau[toColumnIndex])) {
                 const fromColumn = [...state.tableau[columnIndex]];
                 const toColumn = [...state.tableau[toColumnIndex]];
 
-                //check if the move is valid
                 if (isValidTableauMove(card, toColumn)) {
                     const movingCards = fromColumn.splice(index);
+                    if (fromColumn.length > 0) {
+                        fromColumn[fromColumn.length - 1].isFlipped = true;
+                    }
                     return {
                         ...state,
                         tableau: state.tableau.map((col, i) => {
@@ -73,14 +71,15 @@ const gameReducer = (state, action) => {
                 }
             }
 
-            //moving card to foundation
             if (toFoundationSuit !== undefined) {
                 const fromColumn = [...state.tableau[columnIndex]];
                 const toFoundation = [...state.foundation[toFoundationSuit]];
 
-                //check if the move is valid
                 if (isValidFoundationMove(card, toFoundation)) {
                     fromColumn.pop();
+                    if (fromColumn.length > 0) {
+                        fromColumn[fromColumn.length - 1].isFlipped = true;
+                    }
                     return {
                         ...state,
                         tableau: state.tableau.map((col, i) => (i === columnIndex ? fromColumn : col)),
@@ -184,9 +183,13 @@ const TableauColumn = ({ column, columnIndex, moveCard }) => {
 
     return (
         <div ref={drop} className="tableau-column">
-            {column.map((card, cardIndex) => (
-                <Card key={cardIndex} card={card} index={cardIndex} columnIndex={columnIndex} />
-            ))}
+            {column.length === 0 ? (
+                <div className="empty-column">Empty</div>
+            ) : (
+                column.map((card, cardIndex) => (
+                    <Card key={cardIndex} card={card} index={cardIndex} columnIndex={columnIndex} />
+                ))
+            )}
         </div>
     );
 };
