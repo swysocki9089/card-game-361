@@ -157,10 +157,12 @@ const Card = ({ card, index, columnIndex }) => {
         })
     }));
 
+    const isRedSuit = card.suit === '♥' || card.suit === '♦';
+
     return (
         <div
             ref={drag}
-            className={`card ${card.isFlipped ? 'flipped' : ''}`}
+            className={`card ${card.isFlipped ? 'flipped' : ''} ${card.isFlipped && isRedSuit ? 'red' : ''}`}
             style={{ opacity: isDragging ? 0.5 : 1 }}
         >
             {card.isFlipped ? `${card.value}${card.suit}` : '🂠'}

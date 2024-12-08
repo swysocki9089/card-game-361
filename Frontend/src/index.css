@@ -121,6 +121,10 @@ main {
     background-color: #f0f0f0;
 }
 
+.card.red {
+    color: red;
+}
+
 .stock-waste {
     display: flex;
     flex-direction: column;
