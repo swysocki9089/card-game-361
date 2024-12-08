@@ -277,6 +277,10 @@ const Solitaire = () => {
         initializeGame();
     }, [initializeGame]);
 
+    useEffect(() => {
+        console.log('Current wastePile:', state.wastePile);
+    }, [state.wastePile]);
+
     /**
      * Draw the top card from the stockpile into the waste pile.
      */
@@ -331,14 +335,17 @@ const Solitaire = () => {
                             {state.stockPile.length > 0 ? '🂠' : 'Reset Stock'}
                         </div>
 
-                        {/* Waste pile: display only the top card */}
+                        {/* Waste pile: display all cards */}
                         <div className="waste-pile">
                             {state.wastePile.length > 0 ? (
-                                <Card
-                                    card={state.wastePile[state.wastePile.length - 1]}
-                                    index={state.wastePile.length - 1}
-                                    fromWaste={true}
-                                />
+                                state.wastePile.map((card, index) => (
+                                    <Card
+                                        key={index}
+                                        card={card}
+                                        index={index}
+                                        fromWaste={true}
+                                    />
+                                ))
                             ) : (
                                 <div className="card empty">Empty</div>
                             )}
