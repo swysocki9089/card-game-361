@@ -75,7 +75,7 @@ const gameReducer = (state, action) => {
                 const fromColumn = [...state.tableau[columnIndex]];
                 const toFoundation = [...state.foundation[toFoundationSuit]];
 
-                if (isValidFoundationMove(card, toFoundation)) {
+                if (isValidFoundationMove(card, toFoundation, toFoundationSuit)) {
                     fromColumn.pop();
                     if (fromColumn.length > 0) {
                         fromColumn[fromColumn.length - 1].isFlipped = true;
@@ -90,7 +90,6 @@ const gameReducer = (state, action) => {
                     };
                 }
             }
-
             return state;
         }
         default:
@@ -114,14 +113,16 @@ const isValidTableauMove = (card, toColumn) => {
     );
 };
 
-/**function to check if a card can be moved to a foundation pile.
+/**
+ * Function to check if a card can be moved to a foundation pile.
  * @param {Object} card - The card object.
  * @param {Array} toFoundation - The array of cards in the destination foundation pile.
+ * @param {string} toFoundationSuit - The suit of the destination foundation pile.
  * @returns {boolean} True if the move is valid, false otherwise.
  */
-const isValidFoundationMove = (card, toFoundation) => {
+const isValidFoundationMove = (card, toFoundation, toFoundationSuit) => {
     if (toFoundation.length === 0) {
-        return card.value === 'A'; // Only Aces can be placed on empty foundation piles
+        return card.value === 'A' && card.suit === toFoundationSuit; // Only Aces of the correct suit can be placed on empty foundation piles
     }
     const topCard = toFoundation[toFoundation.length - 1];
     return card.suit === topCard.suit && getCardValue(card.value) === getCardValue(topCard.value) + 1;
@@ -215,7 +216,7 @@ const FoundationPile = ({ suit, cards, moveCard }) => {
                     {`${cards[cards.length - 1].value}${suit}`}
                 </div>
             ) : (
-                <div className="card empty">Empty</div>
+                <div className="card empty">{suit}</div>
             )}
         </div>
     );
