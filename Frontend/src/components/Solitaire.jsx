@@ -1,4 +1,4 @@
-﻿import React, { useReducer, useEffect, useCallback } from 'react';
+﻿import React, { useReducer, useEffect, useCallback, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { createDeck } from '../utils/deck';
@@ -179,13 +179,19 @@ const getCardValue = (value) => {
  * @returns {JSX.Element} The rendered card component.
  */
 const Card = ({ card, index, columnIndex, fromWaste = false }) => {
+    const [dragItem, setDragItem] = useState({ card, index, columnIndex, fromWaste });
+
+    useEffect(() => {
+        setDragItem({ card, index, columnIndex, fromWaste });
+    }, [card, index, columnIndex, fromWaste]);
+
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'CARD',
-        item: { card, index, columnIndex, fromWaste },
+        item: dragItem,
         collect: (monitor) => ({
             isDragging: monitor.isDragging()
         })
-    }));
+    }), [dragItem]);
 
     const isRedSuit = card.suit === '♥' || card.suit === '♦';
 
@@ -353,17 +359,14 @@ const Solitaire = () => {
                             {state.stockPile.length > 0 ? '🂠' : 'Reset Stock'}
                         </div>
 
-                        {/* Waste pile: display all cards in a vertical list */}
+                        {/* Waste pile: display only the top card */}
                         <div className="waste-pile">
                             {state.wastePile.length > 0 ? (
-                                state.wastePile.map((card, index) => (
-                                    <Card
-                                        key={index}
-                                        card={card}
-                                        index={index}
-                                        fromWaste={true}
-                                    />
-                                ))
+                                <Card
+                                    card={state.wastePile[state.wastePile.length - 1]}
+                                    index={state.wastePile.length - 1}
+                                    fromWaste={true}
+                                />
                             ) : (
                                 <div className="card empty">Empty</div>
                             )}
