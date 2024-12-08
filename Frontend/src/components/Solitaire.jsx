@@ -51,7 +51,7 @@ const gameReducer = (state, action) => {
             const { item, toColumnIndex, toFoundationSuit } = action.payload;
             const { card, index, columnIndex } = item;
 
-            if (toColumnIndex !== undefined && Array.isArray(state.tableau[toColumnIndex])) {
+            if (columnIndex !== undefined && toColumnIndex !== undefined && Array.isArray(state.tableau[toColumnIndex])) {
                 const fromColumn = [...state.tableau[columnIndex]];
                 const toColumn = [...state.tableau[toColumnIndex]];
 
@@ -71,7 +71,7 @@ const gameReducer = (state, action) => {
                 }
             }
 
-            if (toFoundationSuit !== undefined) {
+            if (columnIndex !== undefined && toFoundationSuit !== undefined) {
                 const fromColumn = [...state.tableau[columnIndex]];
                 const toFoundation = [...state.foundation[toFoundationSuit]];
 
@@ -90,6 +90,22 @@ const gameReducer = (state, action) => {
                     };
                 }
             }
+
+            if (columnIndex === undefined && toFoundationSuit !== undefined) {
+                const toFoundation = [...state.foundation[toFoundationSuit]];
+
+                if (isValidFoundationMove(card, toFoundation, toFoundationSuit)) {
+                    return {
+                        ...state,
+                        wastePile: state.wastePile.slice(0, -1),
+                        foundation: {
+                            ...state.foundation,
+                            [toFoundationSuit]: [...toFoundation, card]
+                        }
+                    };
+                }
+            }
+
             return state;
         }
         default:
@@ -148,10 +164,10 @@ const getCardValue = (value) => {
  * @param {number} props.columnIndex - The index of the column the card belongs to.
  * @returns {JSX.Element} The rendered card component.
  */
-const Card = ({ card, index, columnIndex }) => {
+const Card = ({ card, index, columnIndex, fromWaste = false }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'CARD',
-        item: { card, index, columnIndex },
+        item: { card, index, columnIndex, fromWaste },
         collect: (monitor) => ({
             isDragging: monitor.isDragging()
         })
@@ -208,7 +224,10 @@ const TableauColumn = ({ column, columnIndex, moveCard }) => {
 const FoundationPile = ({ suit, cards, moveCard }) => {
     const [, drop] = useDrop(() => ({
         accept: 'CARD',
-        drop: (item) => moveCard(item, undefined, suit)
+        drop: (item) => {
+            console.log('Card dropped on foundation:', item);
+            moveCard(item, undefined, suit);
+        }
     }));
 
     return (
@@ -272,6 +291,7 @@ const Solitaire = () => {
      * @param {string} toFoundationSuit - The suit of the destination foundation pile.
      */
     const moveCard = (item, toColumnIndex, toFoundationSuit) => {
+        console.log('Moving card:', item, 'toColumnIndex:', toColumnIndex, 'toFoundationSuit:', toFoundationSuit);
         dispatch({ type: 'MOVE_CARD', payload: { item, toColumnIndex, toFoundationSuit } });
     };
 
@@ -304,19 +324,21 @@ const Solitaire = () => {
                         ))}
                     </div>
 
-                    {/*stock and waste pile area */}
+                    {/* Stock and waste pile area */}
                     <div className="stock-waste">
-                        {/*stockpile: click to draw a card */}
+                        {/* Stockpile: click to draw a card */}
                         <div className="stock-pile" onClick={drawCard}>
                             {state.stockPile.length > 0 ? '🂠' : 'Reset Stock'}
                         </div>
 
-                        {/*waste pile: display only the top card */}
+                        {/* Waste pile: display only the top card */}
                         <div className="waste-pile">
                             {state.wastePile.length > 0 ? (
-                                <div className="card">
-                                    {`${state.wastePile[state.wastePile.length - 1].value}${state.wastePile[state.wastePile.length - 1].suit}`}
-                                </div>
+                                <Card
+                                    card={state.wastePile[state.wastePile.length - 1]}
+                                    index={state.wastePile.length - 1}
+                                    fromWaste={true}
+                                />
                             ) : (
                                 <div className="card empty">Empty</div>
                             )}
