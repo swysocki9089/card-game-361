@@ -48,8 +48,22 @@ const gameReducer = (state, action) => {
             }
         }
         case 'MOVE_CARD': {
-            const { item, toColumnIndex, toFoundationSuit } = action.payload;
-            const { card, index, columnIndex } = item;
+            const { card, index, columnIndex, toColumnIndex, toFoundationSuit, fromWaste } = action.payload;
+
+            if (fromWaste && toColumnIndex !== undefined && Array.isArray(state.tableau[toColumnIndex])) {
+                const toColumn = [...state.tableau[toColumnIndex]];
+
+                if (isValidTableauMove(card, toColumn)) {
+                    return {
+                        ...state,
+                        wastePile: state.wastePile.slice(0, -1),
+                        tableau: state.tableau.map((col, i) => {
+                            if (i === toColumnIndex) return [...toColumn, card];
+                            return col;
+                        })
+                    };
+                }
+            }
 
             if (columnIndex !== undefined && toColumnIndex !== undefined && Array.isArray(state.tableau[toColumnIndex])) {
                 const fromColumn = [...state.tableau[columnIndex]];
@@ -295,8 +309,12 @@ const Solitaire = () => {
      * @param {string} toFoundationSuit - The suit of the destination foundation pile.
      */
     const moveCard = (item, toColumnIndex, toFoundationSuit) => {
+        const { card, fromWaste } = item;
+        const index = fromWaste ? state.wastePile.length - 1 : item.index;
+        const columnIndex = fromWaste ? undefined : item.columnIndex;
+
         console.log('Moving card:', item, 'toColumnIndex:', toColumnIndex, 'toFoundationSuit:', toFoundationSuit);
-        dispatch({ type: 'MOVE_CARD', payload: { item, toColumnIndex, toFoundationSuit } });
+        dispatch({ type: 'MOVE_CARD', payload: { card, index, columnIndex, toColumnIndex, toFoundationSuit, fromWaste } });
     };
 
     return (
@@ -335,7 +353,7 @@ const Solitaire = () => {
                             {state.stockPile.length > 0 ? '🂠' : 'Reset Stock'}
                         </div>
 
-                        {/* Waste pile: display all cards */}
+                        {/* Waste pile: display all cards in a vertical list */}
                         <div className="waste-pile">
                             {state.wastePile.length > 0 ? (
                                 state.wastePile.map((card, index) => (
