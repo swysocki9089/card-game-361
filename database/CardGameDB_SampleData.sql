@@ -29,7 +29,7 @@ END CATCH;
 
 --Sample Balance_Table Data
 BEGIN TRY
-	IF EXISTS (SELECT 1 FROM Balance_Table WHERE balanceID = '1')	
+	IF EXISTS (SELECT 1 FROM Balance_Table WHERE balanceID = 1)	
 		THROW 99999, 'Sample User Data Already Loaded', 1;
 	ELSE
 		--Initial Deposits
@@ -89,7 +89,7 @@ END CATCH;
 
 --Sample Results_Table Data
 BEGIN TRY
-	IF EXISTS (SELECT 1 FROM Results_Table WHERE gameID = '1')	
+	IF EXISTS (SELECT 1 FROM Result_Table WHERE gameID = '1')	
 		THROW 99999, 'Sample User Data Already Loaded', 1;
 	ELSE
 		--Game 1
@@ -145,46 +145,46 @@ END CATCH;
 
 --Sample Bet_Table Data
 BEGIN TRY
-	IF EXISTS (SELECT 1 FROM Bet_Table WHERE balanceID = '1')	
+	IF EXISTS (SELECT 1 FROM Bet_Table WHERE betID = '1')	
 		THROW 99999, 'Sample User Data Already Loaded', 1;
 	ELSE
 		--Game 1
 		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (1,  1, 200, 0);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (2,  2, 150, 0);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (3,  6, 500, 1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (2,  1, 150, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (3,  1, 500, 1);
 		--Game 2
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (4,  4, 500, -1);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (5,  5, 350, 1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (4,  2, 500, -1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (5,  2, 350, 1);
 		--Game 3
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (6,  1, 150, 0);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (7,  3, 300, 1);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (8,  4, 400, 0);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (9,  6, 500, 1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (6,  3, 150, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (1,  3, 300, 1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (2,  3, 400, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (3,  3, 500, 1);
 		--Game 4
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (10, 1, 50, 0);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (11, 2, 100, 0);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (12, 5, 250, 0);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (13, 6, 500, 1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (1, 4, 50, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (2, 4, 100, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (3, 4, 250, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (4, 4, 500, 1);
 		--Game 5
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (14, 2, 400, 1);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (15, 3, 300, 0);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (16, 4, 200, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (1, 5, 400, 1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (2, 5, 300, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (3, 5, 200, 0);
 		--Game 6
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (17, 3, 200, -1);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (18, 4, 200, 0);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (19, 5, 150, -1);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (20, 6, 500, 1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (1, 6, 200, -1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (2, 6, 200, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (3, 6, 150, -1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (4, 6, 500, 1);
 		--Game 7
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (21, 2, 300, 1);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (22, 5, 100, 0);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (23, 6, 500, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (5, 7, 300, 1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (6, 7, 100, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (1, 7, 500, 0);
 		--Game 8
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (24, 1, 100, 1);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (25, 4, 200, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (2, 8, 100, 1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (3, 8, 200, 0);
 		--Game 9
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (26, 2, 500, 0);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (27, 4, 200, 1);
-		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (28, 6, 500, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (1, 9, 500, 0);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (2, 9, 200, 1);
+		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (3, 9, 500, 0);
 		
 		PRINT 'Sample User_Table Data Inserted'
 END TRY
