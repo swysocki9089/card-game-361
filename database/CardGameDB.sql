@@ -67,7 +67,8 @@ END CATCH;
 BEGIN TRY
 	BEGIN
 	CREATE TABLE Result_Table(
-		gameID int primary key not null,
+		resultID int primary key not null IDENTITY(1,1),
+		gameID int not null,
 		outcome int not null, --0 for loss, 1 for win, -1 for tie
 		userID int not null foreign key references User_Table(userID),
 		resultTime datetime default getdate() not null
@@ -96,8 +97,9 @@ END CATCH;
 BEGIN TRY
 	BEGIN
 	CREATE TABLE Bet_Table(
+		betID int not null IDENTITY(1,1),
 		userID int not null foreign key references User_Table(userID),
-		gameID int not null foreign key references Result_Table(gameID),
+		gameID int not null foreign key references Result_Table(resultID),
 		betAmount int not null,
 		betOutcome int not null
 	);
