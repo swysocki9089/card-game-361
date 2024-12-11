@@ -1,0 +1,15 @@
+C:\Users\wysoc\Documents\GitHub\card-game-361\obj\Debug\net7.0\CardGames.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\wysoc\Documents\GitHub\card-game-361\obj\Debug\net7.0\CardGames.AssemblyInfoInputs.cache
+C:\Users\wysoc\Documents\GitHub\card-game-361\obj\Debug\net7.0\CardGames.AssemblyInfo.cs
+C:\Users\wysoc\Documents\GitHub\card-game-361\obj\Debug\net7.0\CardGames.csproj.CoreCompileInputs.cache
+C:\Users\wysoc\Documents\GitHub\card-game-361\obj\Debug\net7.0\CardGames.sourcelink.json
+C:\Users\wysoc\Documents\GitHub\card-game-361\bin\Debug\net7.0\CardGames.exe
+C:\Users\wysoc\Documents\GitHub\card-game-361\bin\Debug\net7.0\CardGames.deps.json
+C:\Users\wysoc\Documents\GitHub\card-game-361\bin\Debug\net7.0\CardGames.runtimeconfig.json
+C:\Users\wysoc\Documents\GitHub\card-game-361\bin\Debug\net7.0\CardGames.dll
+C:\Users\wysoc\Documents\GitHub\card-game-361\bin\Debug\net7.0\CardGames.pdb
+C:\Users\wysoc\Documents\GitHub\card-game-361\obj\Debug\net7.0\CardGames.dll
+C:\Users\wysoc\Documents\GitHub\card-game-361\obj\Debug\net7.0\refint\CardGames.dll
+C:\Users\wysoc\Documents\GitHub\card-game-361\obj\Debug\net7.0\CardGames.pdb
+C:\Users\wysoc\Documents\GitHub\card-game-361\obj\Debug\net7.0\CardGames.genruntimeconfig.cache
+C:\Users\wysoc\Documents\GitHub\card-game-361\obj\Debug\net7.0\ref\CardGames.dll
