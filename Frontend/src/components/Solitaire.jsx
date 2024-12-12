@@ -1,10 +1,13 @@
 ﻿import React, { useReducer, useEffect, useCallback, useState } from 'react';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { DndProvider, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { createDeck } from '../utils/deck';
 import { shuffleDeck } from '../utils/shuffle';
 import { gameReducer } from '../utils/gameReducer';
-import Popup from './Popup';
+import Popup from '../utils/popup';
+import Card from '../utils/card';
+import TableauColumn from '../utils/tableau';
+import { FoundationPile } from '../utils/foundation';
 
 //initial game state
 const initialState = {
@@ -15,101 +18,6 @@ const initialState = {
     wastePile: [], //cards drawn from the stockpile
     moves: 0, //players moves (unimplemented)
     gameStatus: 'NOT_STARTED' //game status 
-};
-
-/**Card component represents a single card in the game.
- * It uses the useDrag hook to make the card draggable.
- * @param {Object} props - The properties object.
- * @param {Object} props.card - The card object.
- * @param {number} props.index - The index of the card in its column.
- * @param {number} props.columnIndex - The index of the column the card belongs to.
- * @returns {JSX.Element} The rendered card component.
- */
-const Card = ({ card, index, columnIndex, fromWaste = false }) => {
-    const [dragItem, setDragItem] = useState({ card, index, columnIndex, fromWaste });
-
-    useEffect(() => {
-        setDragItem({ card, index, columnIndex, fromWaste });
-    }, [card, index, columnIndex, fromWaste]);
-
-    const [{ isDragging }, drag] = useDrag(() => ({
-        type: 'CARD',
-        item: dragItem,
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging()
-        })
-    }), [dragItem]);
-
-    const isRedSuit = card.suit === '♥' || card.suit === '♦';
-
-    return (
-        <div
-            ref={drag}
-            className={`card ${card.isFlipped ? 'flipped' : ''} ${card.isFlipped && isRedSuit ? 'red' : ''}`}
-            style={{ opacity: isDragging ? 0.5 : 1 }}
-        >
-            {card.isFlipped ? `${card.value}${card.suit}` : '🂠'}
-        </div>
-    );
-};
-
-/**TableauColumn component represents a single column in the tableau.
- * It uses the useDrop hook to make the column droppable.
- * @param {Object} props - The properties object.
- * @param {Array} props.column - The array of cards in the column.
- * @param {number} props.columnIndex - The index of the column.
- * @param {Function} props.moveCard - The function to move a card.
- * @returns {JSX.Element} The rendered tableau column component.
- */
-const TableauColumn = ({ column, columnIndex, moveCard }) => {
-    const [, drop] = useDrop(() => ({
-        accept: 'CARD',
-        drop: (item) => moveCard(item, columnIndex)
-    }));
-
-    return (
-        <div ref={drop} className="tableau-column">
-            {column.length === 0 ? (
-                <div className="empty-column"></div>
-            ) : (
-                column.map((card, cardIndex) => (
-                    <Card key={cardIndex} card={card} index={cardIndex} columnIndex={columnIndex} />
-                ))
-            )}
-        </div>
-    );
-};
-
-/**FoundationPile component represents a single pile in the foundation.
- * It uses the useDrop hook to make the pile droppable.
- * @param {Object} props - The properties object.
- * @param {string} props.suit - The suit of the foundation pile.
- * @param {Array} props.cards - The array of cards in the foundation pile.
- * @param {Function} props.moveCard - The function to move a card.
- * @returns {JSX.Element} The rendered foundation pile component.
- */
-const FoundationPile = ({ suit, cards, moveCard }) => {
-    const [, drop] = useDrop(() => ({
-        accept: 'CARD',
-        drop: (item) => {
-            console.log('Card dropped on foundation:', item);
-            moveCard(item, undefined, suit);
-        }
-    }));
-
-    const isRedSuit = suit === '♥' || suit === '♦';
-
-    return (
-        <div ref={drop} className="foundation-pile">
-            {cards.length > 0 ? (
-                <div className={`card ${isRedSuit ? 'red' : ''}`}>
-                    {`${cards[cards.length - 1].value}${suit}`}
-                </div>
-            ) : (
-                <div className={`card empty ${isRedSuit ? 'red' : ''}`}>{suit}</div>
-            )}
-        </div>
-    );
 };
 
 /**main solitaire component to manage the game state and render the UI
@@ -187,7 +95,7 @@ const Solitaire = () => {
                 {showPopup && <Popup message="You Win!" onClose={() => setShowPopup(false)} onRestart={handleRestart}/>}
                 <button className="center-button" onClick={handleRestart}>Forfeit</button>
                 <div className="game-area">
-                    {/* Foundation area */}
+                    {/* foundation area */}
                     <div className="foundation">
                         {Object.keys(state.foundation).map((suit) => (
                             <FoundationPile
@@ -199,7 +107,7 @@ const Solitaire = () => {
                         ))}
                     </div>
 
-                    {/* Tableau area */}
+                    {/* tableau area */}
                     <div className="tableau">
                         {state.tableau.map((column, columnIndex) => (
                             <TableauColumn
@@ -211,14 +119,14 @@ const Solitaire = () => {
                         ))}
                     </div>
 
-                    {/* Stock and waste pile area */}
+                    {/* stock and waste pile area */}
                     <div className="stock-waste">
-                        {/* Stockpile: click to draw a card */}
+                        {/* stockpile: click to draw a card */}
                         <div className="stock-pile" onClick={drawCard}>
                             {state.stockPile.length > 0 ? 'Draw Card' : 'Reset Stock'}
                         </div>
 
-                        {/* Waste pile: display only the top card */}
+                        {/* waste pile: display only the top card */}
                         <div className="waste-pile">
                             {state.wastePile.length > 0 ? (
                                 <Card

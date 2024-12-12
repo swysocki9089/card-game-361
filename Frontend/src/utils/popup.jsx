@@ -1,5 +1,4 @@
-﻿// Frontend/src/components/Popup.jsx
-import React from 'react';
+﻿import React from 'react';
 
 const Popup = ({ message, onClose, onRestart }) => {
     return (
