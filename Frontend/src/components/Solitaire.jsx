@@ -17,7 +17,7 @@ const initialState = {
     stockPile: [], //cards in the stockpile
     wastePile: [], //cards drawn from the stockpile
     moves: 0, //players moves (unimplemented)
-    gameStatus: 'NOT_STARTED' //game status 
+    gameStatus: 'NOT_STARTED' //game status
 };
 
 /**main solitaire component to manage the game state and render the UI
@@ -136,7 +136,7 @@ const Solitaire = () => {
                                     fromWaste={true}
                                 />
                             ) : (
-                                <div className="card empty"></div>
+                                <div className="empty-column"></div>
                             )}
                         </div>
                     </div>
