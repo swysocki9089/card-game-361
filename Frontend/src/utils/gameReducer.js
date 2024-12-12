@@ -1,5 +1,4 @@
-﻿
-const gameReducer = (state, action) => {
+﻿const gameReducer = (state, action) => {
     switch (action.type) {
         case 'INITIALIZE_GAME': {
             return {
@@ -146,4 +145,4 @@ const checkWinCondition = (foundation) => {
     return Object.values(foundation).every(pile => pile.length === 13);
 };
 
-export { gameReducer };
+export default gameReducer;

@@ -10,7 +10,7 @@ import { useDrop } from 'react-dnd';
  * @param {Function} props.moveCard - The function to move a card.
  * @returns {JSX.Element} The rendered foundation pile component.
  */
-export const FoundationPile = ({ suit, cards, moveCard }) => {
+const FoundationPile = ({ suit, cards, moveCard }) => {
     const [, drop] = useDrop(() => ({
         accept: 'CARD',
         drop: (item) => {
@@ -33,3 +33,5 @@ export const FoundationPile = ({ suit, cards, moveCard }) => {
         </div>
     );
 };
+
+export default FoundationPile;

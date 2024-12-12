@@ -1,13 +1,13 @@
 ﻿import React, { useReducer, useEffect, useCallback, useState } from 'react';
-import { DndProvider, useDrop } from 'react-dnd';
+import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { createDeck } from '../utils/deck';
-import { shuffleDeck } from '../utils/shuffle';
-import { gameReducer } from '../utils/gameReducer';
+import createDeck from '../utils/deck';
+import shuffleDeck from '../utils/shuffle';
+import gameReducer from '../utils/gameReducer';
 import Popup from '../utils/popup';
 import Card from '../utils/card';
 import TableauColumn from '../utils/tableau';
-import { FoundationPile } from '../utils/foundation';
+import FoundationPile from '../utils/foundation';
 
 //initial game state
 const initialState = {
