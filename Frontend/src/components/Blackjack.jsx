@@ -2,6 +2,7 @@
 import React, { useReducer, useCallback, useEffect } from 'react';
 import createDeck from '../utils/deck';
 import shuffleDeck from '../utils/shuffle';
+import getCardUnicode from '../utils/cardUnicode';
 
 // Initial game state
 const initialState = {
@@ -119,6 +120,33 @@ const calculateScore = (hand) => {
     return total;
 };
 
+//Card component to use the unicode for card icons rather than just a symbol and number
+const Card = ({ card }) => {
+    if (!card) return null;
+
+    const unicodeCard = getCardUnicode(card.value, card.suit);
+
+    // Inline styles for card rendering
+    const cardStyle = {
+        fontSize: '8em', // Adjust size
+        margin: '5px',    // Add spacing between cards
+        display: 'inline-block', // Ensure cards are displayed inline
+        textAlign: 'center', // Center align text
+        //color: '#333',    // Card color (optional)
+        //fontWeight: 'bold', // Bold text for emphasis (optional)
+    };
+
+    return (
+        <span
+            style={cardStyle}
+            role="img"
+            aria-label={`${card.value} of ${card.suit}`}
+        >
+            {String.fromCodePoint(parseInt(unicodeCard.replace('\\u{', '').replace('}', ''), 16))}
+        </span>
+    );
+};
+
 // Main Blackjack component
 const Blackjack = () => {
     const [state, dispatch] = useReducer(blackjackReducer, initialState);
@@ -152,7 +180,7 @@ const Blackjack = () => {
                 {state.gameStatus === 'IN_PROGRESS' && (
                     <div className="player-area">
                         <h2>Player's Hand ({state.playerScore})</h2>
-                        <div className="cards">{state.playerHand.map((card, i) => `${card.value}${card.suit} `)}</div>
+                        <div className="cards">{state.playerHand.map((card, i) => (<Card key={i} card={card} />))}</div>
                         <div className="actions">
                             <button className="hit-button" onClick={playerHit}>Hit</button>
                             <button className="stand-button" onClick={playerStand}>Stand</button>
@@ -166,7 +194,7 @@ const Blackjack = () => {
                     <div className="results-area">
                         <h2>Game Over: {state.gameStatus.replace('_', ' ')}</h2>
                         <h3>Dealer's Hand ({state.dealerScore})</h3>
-                        <div className="cards">{state.dealerHand.map((card, i) => `${card.value}${card.suit} `)}</div>
+                        <div className="cards">{state.dealerHand.map((card, i) => (<Card key={i} card={card} />))}</div>
                         <button className="restart-button" onClick={initializeGame}>Play Again</button>
                     </div>
                 )}
