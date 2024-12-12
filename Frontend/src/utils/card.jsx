@@ -21,16 +21,17 @@ const Card = ({ card, index, columnIndex, fromWaste = false }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'CARD',
         item: dragItem,
+        canDrag: card.isFlipped, 
         collect: (monitor) => ({
             isDragging: monitor.isDragging()
         })
-    }), [dragItem]);
+    }), [dragItem, card.isFlipped]);
 
     const isRedSuit = card.suit === '♥' || card.suit === '♦';
 
     return (
         <div
-            ref={drag}
+            ref={card.isFlipped ? drag : null} 
             className={`card ${card.isFlipped ? 'flipped' : ''} ${card.isFlipped && isRedSuit ? 'red' : ''}`}
             style={{ opacity: isDragging ? 0.5 : 1 }}
         >
