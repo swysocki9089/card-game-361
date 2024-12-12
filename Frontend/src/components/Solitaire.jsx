@@ -3,6 +3,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { createDeck } from '../utils/deck';
 import { shuffleDeck } from '../utils/shuffle';
+import { gameReducer } from '../utils/gameReducer';
 import Popup from './Popup';
 
 //initial game state
@@ -14,171 +15,6 @@ const initialState = {
     wastePile: [], //cards drawn from the stockpile
     moves: 0, //players moves (unimplemented)
     gameStatus: 'NOT_STARTED' //game status 
-};
-
-const checkWinCondition = (foundation) => {
-    return Object.values(foundation).every(pile => pile.length === 13);
-};
-
-/**reducer function to handle game state transitions.
- */
-const gameReducer = (state, action) => {
-    switch (action.type) {
-        case 'INITIALIZE_GAME': {
-            return {
-                ...state,
-                deck: action.payload.deck,
-                tableau: action.payload.tableau,
-                stockPile: action.payload.stockPile,
-                foundation: action.payload.foundation,
-                wastePile: [],
-                gameStatus: 'IN_PROGRESS'
-            };
-        }
-        case 'DRAW_CARD': {
-            if (state.stockPile.length > 0) {
-                const newStockPile = [...state.stockPile];
-                const drawnCard = newStockPile.pop();
-                return {
-                    ...state,
-                    stockPile: newStockPile,
-                    wastePile: [...state.wastePile, { ...drawnCard, isFlipped: true }]
-                };
-            } else {
-                return {
-                    ...state,
-                    stockPile: [...state.wastePile].reverse().map(card => ({ ...card, isFlipped: false })),
-                    wastePile: []
-                };
-            }
-        }
-        case 'MOVE_CARD': {
-            const { card, index, columnIndex, toColumnIndex, toFoundationSuit, fromWaste } = action.payload;
-
-            let newState = { ...state };
-
-            if (fromWaste && toColumnIndex !== undefined && Array.isArray(state.tableau[toColumnIndex])) {
-                const toColumn = [...state.tableau[toColumnIndex]];
-
-                if (isValidTableauMove(card, toColumn)) {
-                    newState = {
-                        ...state,
-                        wastePile: state.wastePile.slice(0, -1),
-                        tableau: state.tableau.map((col, i) => {
-                            if (i === toColumnIndex) return [...toColumn, card];
-                            return col;
-                        })
-                    };
-                }
-            }
-
-            if (columnIndex !== undefined && toColumnIndex !== undefined && Array.isArray(state.tableau[toColumnIndex])) {
-                const fromColumn = [...state.tableau[columnIndex]];
-                const toColumn = [...state.tableau[toColumnIndex]];
-
-                if (isValidTableauMove(card, toColumn)) {
-                    const movingCards = fromColumn.splice(index);
-                    if (fromColumn.length > 0) {
-                        fromColumn[fromColumn.length - 1].isFlipped = true;
-                    }
-                    newState = {
-                        ...state,
-                        tableau: state.tableau.map((col, i) => {
-                            if (i === columnIndex) return fromColumn;
-                            if (i === toColumnIndex) return [...toColumn, ...movingCards];
-                            return col;
-                        })
-                    };
-                }
-            }
-
-            if (columnIndex !== undefined && toFoundationSuit !== undefined) {
-                const fromColumn = [...state.tableau[columnIndex]];
-                const toFoundation = [...state.foundation[toFoundationSuit]];
-
-                if (isValidFoundationMove(card, toFoundation, toFoundationSuit)) {
-                    fromColumn.pop();
-                    if (fromColumn.length > 0) {
-                        fromColumn[fromColumn.length - 1].isFlipped = true;
-                    }
-                    newState = {
-                        ...state,
-                        tableau: state.tableau.map((col, i) => (i === columnIndex ? fromColumn : col)),
-                        foundation: {
-                            ...state.foundation,
-                            [toFoundationSuit]: [...toFoundation, card]
-                        }
-                    };
-                }
-            }
-
-            if (columnIndex === undefined && toFoundationSuit !== undefined) {
-                const toFoundation = [...state.foundation[toFoundationSuit]];
-
-                if (isValidFoundationMove(card, toFoundation, toFoundationSuit)) {
-                    newState = {
-                        ...state,
-                        wastePile: state.wastePile.slice(0, -1),
-                        foundation: {
-                            ...state.foundation,
-                            [toFoundationSuit]: [...toFoundation, card]
-                        }
-                    };
-                }
-            }
-
-            if (checkWinCondition(newState.foundation)) {
-                newState.gameStatus = 'WON';
-            }
-
-            return newState;
-        }
-        default:
-            return state;
-    }
-};
-
-/**function to check if a card can be moved to a tableau column.
- * @param {Object} card - The card object.
- * @param {Array} toColumn - The array of cards in the destination column.
- * @returns {boolean} True if the move is valid, false otherwise.
- */
-const isValidTableauMove = (card, toColumn) => {
-    if (toColumn.length === 0) {
-        return card.value === 'K'; // Only Kings can be placed on empty columns
-    }
-    const topCard = toColumn[toColumn.length - 1];
-    return (
-        (card.suit === '♠' || card.suit === '♣') !== (topCard.suit === '♠' || topCard.suit === '♣') &&
-        getCardValue(card.value) === getCardValue(topCard.value) - 1
-    );
-};
-
-/**
- * Function to check if a card can be moved to a foundation pile.
- * @param {Object} card - The card object.
- * @param {Array} toFoundation - The array of cards in the destination foundation pile.
- * @param {string} toFoundationSuit - The suit of the destination foundation pile.
- * @returns {boolean} True if the move is valid, false otherwise.
- */
-const isValidFoundationMove = (card, toFoundation, toFoundationSuit) => {
-    if (toFoundation.length === 0) {
-        return card.value === 'A' && card.suit === toFoundationSuit; // Only Aces of the correct suit can be placed on empty foundation piles
-    }
-    const topCard = toFoundation[toFoundation.length - 1];
-    return card.suit === topCard.suit && getCardValue(card.value) === getCardValue(topCard.value) + 1;
-};
-
-/**function to convert card values to numerical values for comparison.
- * @param {string} value - The card value.
- * @returns {number} The numerical value of the card.
- */
-const getCardValue = (value) => {
-    if (value === 'A') return 1;
-    if (value === 'J') return 11;
-    if (value === 'Q') return 12;
-    if (value === 'K') return 13;
-    return parseInt(value, 10);
 };
 
 /**Card component represents a single card in the game.
@@ -234,7 +70,7 @@ const TableauColumn = ({ column, columnIndex, moveCard }) => {
     return (
         <div ref={drop} className="tableau-column">
             {column.length === 0 ? (
-                <div className="empty-column">Empty</div>
+                <div className="empty-column"></div>
             ) : (
                 column.map((card, cardIndex) => (
                     <Card key={cardIndex} card={card} index={cardIndex} columnIndex={columnIndex} />
@@ -261,14 +97,16 @@ const FoundationPile = ({ suit, cards, moveCard }) => {
         }
     }));
 
+    const isRedSuit = suit === '♥' || suit === '♦';
+
     return (
         <div ref={drop} className="foundation-pile">
             {cards.length > 0 ? (
-                <div className="card">
+                <div className={`card ${isRedSuit ? 'red' : ''}`}>
                     {`${cards[cards.length - 1].value}${suit}`}
                 </div>
             ) : (
-                <div className="card empty">{suit}</div>
+                <div className={`card empty ${isRedSuit ? 'red' : ''}`}>{suit}</div>
             )}
         </div>
     );
@@ -377,7 +215,7 @@ const Solitaire = () => {
                     <div className="stock-waste">
                         {/* Stockpile: click to draw a card */}
                         <div className="stock-pile" onClick={drawCard}>
-                            {state.stockPile.length > 0 ? '🂠' : 'Reset Stock'}
+                            {state.stockPile.length > 0 ? 'Draw Card' : 'Reset Stock'}
                         </div>
 
                         {/* Waste pile: display only the top card */}
@@ -390,7 +228,7 @@ const Solitaire = () => {
                                     fromWaste={true}
                                 />
                             ) : (
-                                <div className="card empty">Empty</div>
+                                <div className="card empty"></div>
                             )}
                         </div>
                     </div>

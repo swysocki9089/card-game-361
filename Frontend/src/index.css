@@ -193,9 +193,9 @@ main {
 }
 
 .empty-column {
-    border: 2px dashed #ccc;
-    height: 100px; /* Adjust height as needed */
-    width: 50px; /* Adjust width as needed */
+    border: 2px dashed #333;
+    height: 70px; 
+    width: 50px; 
     display: flex;
     justify-content: center;
     align-items: center;
