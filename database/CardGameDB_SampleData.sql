@@ -30,7 +30,7 @@ END CATCH;
 --Sample Balance_Table Data
 BEGIN TRY
 	IF EXISTS (SELECT 1 FROM Balance_Table WHERE balanceID = 1)	
-		THROW 99999, 'Sample User Data Already Loaded', 1;
+		THROW 99999, 'Sample Balance Data Already Loaded', 1;
 	ELSE
 		--Initial Deposits
 		insert into Balance_Table (balanceID, userID, currentBalance, reason) values (1,  1, '500', 'Deposit');
@@ -74,7 +74,7 @@ BEGIN TRY
 		insert into Balance_Table (balanceID, userID, currentBalance, reason) values (30, 4, '800', 'Won Bet');
 		insert into Balance_Table (balanceID, userID, currentBalance, reason) values (31, 6, '3500', 'Won Bet');
 
-		PRINT 'Sample User_Table Data Inserted'
+		PRINT 'Sample Balance_Table Data Inserted'
 END TRY
 BEGIN CATCH
 	SELECT
@@ -90,7 +90,7 @@ END CATCH;
 --Sample Results_Table Data
 BEGIN TRY
 	IF EXISTS (SELECT 1 FROM Result_Table WHERE gameID = '1')	
-		THROW 99999, 'Sample User Data Already Loaded', 1;
+		THROW 99999, 'Sample Result Data Already Loaded', 1;
 	ELSE
 		--Game 1
 		insert into Result_Table (gameID, userID, outcome, resultTime) values (1, 1, 0, '2/1/2024');
@@ -130,7 +130,7 @@ BEGIN TRY
 		insert into Result_Table (gameID, userID, outcome, resultTime) values (9, 4, 1, '5/7/2025');
 		insert into Result_Table (gameID, userID, outcome, resultTime) values (9, 6, 0, '5/7/2025');
 
-		PRINT 'Sample User_Table Data Inserted'
+		PRINT 'Sample Result_Table Data Inserted'
 END TRY
 BEGIN CATCH
 	SELECT
@@ -146,7 +146,7 @@ END CATCH;
 --Sample Bet_Table Data
 BEGIN TRY
 	IF EXISTS (SELECT 1 FROM Bet_Table WHERE betID = '1')	
-		THROW 99999, 'Sample User Data Already Loaded', 1;
+		THROW 99999, 'Sample Bet Data Already Loaded', 1;
 	ELSE
 		--Game 1
 		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (1,  1, 200, 0);
@@ -186,7 +186,7 @@ BEGIN TRY
 		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (2, 9, 200, 1);
 		insert into Bet_Table (userID, gameID, betAmount, betOutcome) values (3, 9, 500, 0);
 		
-		PRINT 'Sample User_Table Data Inserted'
+		PRINT 'Sample Bet_Table Data Inserted'
 END TRY
 BEGIN CATCH
 	SELECT
