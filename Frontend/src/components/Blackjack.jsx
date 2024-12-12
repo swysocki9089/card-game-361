@@ -132,8 +132,7 @@ const Card = ({ card }) => {
         margin: '5px',    // Add spacing between cards
         display: 'inline-block', // Ensure cards are displayed inline
         textAlign: 'center', // Center align text
-        //color: '#333',    // Card color (optional)
-        //fontWeight: 'bold', // Bold text for emphasis (optional)
+        color: card.suit === '♥' || card.suit === '♦' ? 'red' : 'black', // Updates color of card symbols to match suit
     };
 
     return (
@@ -161,7 +160,7 @@ const Blackjack = () => {
 
     const playerStand = () => {
         dispatch({ type: 'PLAYER_STAND' });
-        setTimeout(() => dispatch({ type: 'DEALER_TURN' }), 500);
+        setTimeout(() => dispatch({ type: 'DEALER_TURN' }), 1000);
     };
 
     useEffect(() => {

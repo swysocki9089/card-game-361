@@ -1,12 +1,12 @@
 ﻿const getCardUnicode = (value, suit) => {
-    const suitMap = {
+    const suitMap = {   //Mappings for values of suits to the unicode value
         '♠': 'A', // Spades
         '♥': 'B', // Hearts
         '♦': 'C', // Diamonds
         '♣': 'D'  // Clubs
     };
 
-    const valueMap = {
+    const valueMap = {  //Mappings for values of cards to the unicode value
         'A': '1',
         '2': '2',
         '3': '3',
