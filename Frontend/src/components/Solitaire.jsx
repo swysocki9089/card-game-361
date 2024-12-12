@@ -3,6 +3,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { createDeck } from '../utils/deck';
 import { shuffleDeck } from '../utils/shuffle';
+import Popup from './Popup';
 
 //initial game state
 const initialState = {
@@ -14,6 +15,10 @@ const initialState = {
     score: 0, //players score (unimplemented)
     moves: 0, //players moves (unimplemented)
     gameStatus: 'NOT_STARTED' //game status (unimplemented)
+};
+
+const checkWinCondition = (foundation) => {
+    return Object.values(foundation).every(pile => pile.length === 13);
 };
 
 /**reducer function to handle game state transitions.
@@ -50,11 +55,13 @@ const gameReducer = (state, action) => {
         case 'MOVE_CARD': {
             const { card, index, columnIndex, toColumnIndex, toFoundationSuit, fromWaste } = action.payload;
 
+            let newState = { ...state };
+
             if (fromWaste && toColumnIndex !== undefined && Array.isArray(state.tableau[toColumnIndex])) {
                 const toColumn = [...state.tableau[toColumnIndex]];
 
                 if (isValidTableauMove(card, toColumn)) {
-                    return {
+                    newState = {
                         ...state,
                         wastePile: state.wastePile.slice(0, -1),
                         tableau: state.tableau.map((col, i) => {
@@ -74,7 +81,7 @@ const gameReducer = (state, action) => {
                     if (fromColumn.length > 0) {
                         fromColumn[fromColumn.length - 1].isFlipped = true;
                     }
-                    return {
+                    newState = {
                         ...state,
                         tableau: state.tableau.map((col, i) => {
                             if (i === columnIndex) return fromColumn;
@@ -94,7 +101,7 @@ const gameReducer = (state, action) => {
                     if (fromColumn.length > 0) {
                         fromColumn[fromColumn.length - 1].isFlipped = true;
                     }
-                    return {
+                    newState = {
                         ...state,
                         tableau: state.tableau.map((col, i) => (i === columnIndex ? fromColumn : col)),
                         foundation: {
@@ -109,7 +116,7 @@ const gameReducer = (state, action) => {
                 const toFoundation = [...state.foundation[toFoundationSuit]];
 
                 if (isValidFoundationMove(card, toFoundation, toFoundationSuit)) {
-                    return {
+                    newState = {
                         ...state,
                         wastePile: state.wastePile.slice(0, -1),
                         foundation: {
@@ -120,7 +127,11 @@ const gameReducer = (state, action) => {
                 }
             }
 
-            return state;
+            if (checkWinCondition(newState.foundation)) {
+                newState.gameStatus = 'WON';
+            }
+
+            return newState;
         }
         default:
             return state;
@@ -268,6 +279,7 @@ const FoundationPile = ({ suit, cards, moveCard }) => {
 const Solitaire = () => {
     //manage the game state using the useReducer function
     const [state, dispatch] = useReducer(gameReducer, initialState);
+    const [showPopup, setShowPopup] = useState(false);
 
     //initialize the game by creating a shuffled deck and dealing cards to the tableau area
     const initializeGame = useCallback(() => {
@@ -298,8 +310,10 @@ const Solitaire = () => {
     }, [initializeGame]);
 
     useEffect(() => {
-        console.log('Current wastePile:', state.wastePile);
-    }, [state.wastePile]);
+        if (state.gameStatus === 'WON') {
+            setShowPopup(true);
+        }
+    }, [state.gameStatus]);
 
     /**
      * Draw the top card from the stockpile into the waste pile.
@@ -323,10 +337,16 @@ const Solitaire = () => {
         dispatch({ type: 'MOVE_CARD', payload: { card, index, columnIndex, toColumnIndex, toFoundationSuit, fromWaste } });
     };
 
+    const handleRestart = () => {
+        setShowPopup(false);
+        initializeGame();
+    };
+
     return (
         <DndProvider backend={HTML5Backend}>
             <div>
                 <h1>Klondike Solitaire</h1>
+                {showPopup && <Popup message="You Win!" onClose={() => setShowPopup(false)} onRestart={handleRestart} />}
                 <div className="game-area">
                     {/* Foundation area */}
                     <div className="foundation">
@@ -365,10 +385,11 @@ const Solitaire = () => {
                                 <Card
                                     card={state.wastePile[state.wastePile.length - 1]}
                                     index={state.wastePile.length - 1}
+                                    columnIndex={undefined}
                                     fromWaste={true}
                                 />
                             ) : (
-                                <div className="card empty">Empty</div>
+                                <div className="empty-column">Empty</div>
                             )}
                         </div>
                     </div>
