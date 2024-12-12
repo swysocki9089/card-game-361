@@ -12,9 +12,8 @@ const initialState = {
     foundation: { '♠': [], '♣': [], '♥': [], '♦': [] }, //foundation piles for each suit
     stockPile: [], //cards in the stockpile
     wastePile: [], //cards drawn from the stockpile
-    score: 0, //players score (unimplemented)
     moves: 0, //players moves (unimplemented)
-    gameStatus: 'NOT_STARTED' //game status (unimplemented)
+    gameStatus: 'NOT_STARTED' //game status 
 };
 
 const checkWinCondition = (foundation) => {
@@ -31,6 +30,7 @@ const gameReducer = (state, action) => {
                 deck: action.payload.deck,
                 tableau: action.payload.tableau,
                 stockPile: action.payload.stockPile,
+                foundation: action.payload.foundation,
                 wastePile: [],
                 gameStatus: 'IN_PROGRESS'
             };
@@ -299,7 +299,8 @@ const Solitaire = () => {
             payload: {
                 deck: newDeck,
                 tableau: newTableau,
-                stockPile: newDeck
+                stockPile: newDeck,
+                foundation: { '♠': [], '♣': [], '♥': [], '♦': [] } // Reset foundation
             }
         });
     }, []);
@@ -345,8 +346,8 @@ const Solitaire = () => {
     return (
         <DndProvider backend={HTML5Backend}>
             <div>
-                <h1>Klondike Solitaire</h1>
-                {showPopup && <Popup message="You Win!" onClose={() => setShowPopup(false)} onRestart={handleRestart} />}
+                {showPopup && <Popup message="You Win!" onClose={() => setShowPopup(false)} onRestart={handleRestart}/>}
+                <button className="center-button" onClick={handleRestart}>Forfeit</button>
                 <div className="game-area">
                     {/* Foundation area */}
                     <div className="foundation">
@@ -389,7 +390,7 @@ const Solitaire = () => {
                                     fromWaste={true}
                                 />
                             ) : (
-                                <div className="empty-column">Empty</div>
+                                <div className="card empty">Empty</div>
                             )}
                         </div>
                     </div>
