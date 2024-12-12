@@ -1,7 +1,7 @@
 ﻿//Many sections adapted by bgreiner2 from the Solitaire.jsx file authored by TheDevChuck
 import React, { useReducer, useCallback, useEffect } from 'react';
-import { createDeck } from '../utils/deck';
-import { shuffleDeck } from '../utils/shuffle';
+import createDeck from '../utils/deck';
+import shuffleDeck from '../utils/shuffle';
 
 // Initial game state
 const initialState = {
