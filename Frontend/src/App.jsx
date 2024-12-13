@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
 import Solitaire from './components/Solitaire.jsx';
+import Blackjack from './components/Blackjack.jsx';
 import './index.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
                     <ul>
                         <li><Link to="/">Home</Link></li>
                         <li><Link to="/solitaire">Solitaire</Link></li>
+                        <li><Link to="/blackjack">Blackjack</Link></li>
                         <li><Link to="/login">Login</Link></li>
                     </ul>
                 </nav>
@@ -23,6 +25,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/solitaire" element={<Solitaire />} />
+                    <Route path="/blackjack" element={<Blackjack />} />
                 </Routes>
             </main>
         </Router>
