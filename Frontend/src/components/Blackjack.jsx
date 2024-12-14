@@ -1,4 +1,4 @@
-﻿import React, {useEffect, useState} from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import BlackjackCard from '../utils/blackjackCard';
 import './blackjack.css';
 
@@ -184,7 +184,7 @@ const Blackjack = () => {
                 ))}
             </div>
             <button onClick={dealCards}>Deal Cards</button>
-            <button onClick={addPlayer}>Add Player</button>
+            <button onClick={addPlayer} disabled={cardsDealt}>Add Player</button>
             <button onClick={resetGame}>New Game</button>
         </div>
     );
