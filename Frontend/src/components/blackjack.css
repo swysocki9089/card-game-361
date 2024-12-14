@@ -35,4 +35,22 @@
 
 button {
     margin-top: 20px;
+    margin-right: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+    background-color: #333; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #555; 
+}
+
+button:disabled {
+    background-color: #ccc; 
+    cursor: not-allowed;
 }
