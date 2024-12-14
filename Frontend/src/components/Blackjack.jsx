@@ -144,6 +144,7 @@ const Blackjack = () => {
                         <BlackjackCard key={index} card={card} />
                     ))}
                 </div>
+                <p>Hand Value: {calculateHandValue(dealerCards.filter(card => card.isFlipped))}</p>
                 {dealerBusted && <p>Dealer Busted!</p>}
             </div>
             <div className="player-areas">
@@ -155,6 +156,7 @@ const Blackjack = () => {
                                 <BlackjackCard key={index} card={card} />
                             ))}
                         </div>
+                        <p>Hand Value: {calculateHandValue(player.cards)}</p>
                         {cardsDealt && (
                             <>
                                 <button onClick={() => hit(player.id)} disabled={player.hasStood || player.isBusted}>Hit</button>
