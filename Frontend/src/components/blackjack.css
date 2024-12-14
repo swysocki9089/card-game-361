@@ -13,8 +13,18 @@
     align-items: center;
 }
 
-.dealer-area, .player-area {
+.dealer-area {
     margin: 20px 0;
+}
+
+.player-areas {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.player-area {
+    margin: 0 10px;
 }
 
 .cards {
