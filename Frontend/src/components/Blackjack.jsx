@@ -111,7 +111,7 @@ const Blackjack = () => {
                 let losses = player.losses;
                 if (!player.isBusted) {
                     if (playerValue > dealerValue) {
-                        result = 'Win';
+                        result = 'Win!';
                         wins += 1;
                     } else if (playerValue < dealerValue) {
                         result = 'Lose';
@@ -144,7 +144,7 @@ const Blackjack = () => {
                         <BlackjackCard key={index} card={card} />
                     ))}
                 </div>
-                <p>Hand Value: {calculateHandValue(dealerCards.filter(card => card.isFlipped))}</p>
+                <p className="hand-value">Hand Value: {calculateHandValue(dealerCards.filter(card => card.isFlipped))}</p>
                 {dealerBusted && <p>Dealer Busted!</p>}
             </div>
             <div className="player-areas">
@@ -152,11 +152,15 @@ const Blackjack = () => {
                     <div key={player.id} className="player-area">
                         <h2>Player {player.id}'s Cards</h2>
                         <div className="cards">
-                            {player.cards.map((card, index) => (
-                                <BlackjackCard key={index} card={card} />
-                            ))}
+                            {player.cards.length > 0 ? (
+                                player.cards.map((card, index) => (
+                                    <BlackjackCard key={index} card={card} />
+                                ))
+                            ) : (
+                                <div className="empty-cards"></div>
+                            )}
                         </div>
-                        <p>Hand Value: {calculateHandValue(player.cards)}</p>
+                        <p className="hand-value">Hand Value: {calculateHandValue(player.cards)}</p>
                         {cardsDealt && (
                             <>
                                 <button onClick={() => hit(player.id)} disabled={player.hasStood || player.isBusted}>Hit</button>
@@ -164,10 +168,10 @@ const Blackjack = () => {
                             </>
                         )}
                         <button onClick={() => removePlayer(player.id)} disabled={cardsDealt || players.length <= 1}>Remove Player</button>
-                        {player.isBusted && <p>Busted!</p>}
+                        {player.isBusted && <p>Busted</p>}
                         {player.result && <p>{player.result}</p>}
-                        <p>Wins: {player.wins}</p>
-                        <p>Losses: {player.losses}</p>
+                        <p className="wins">Wins: {player.wins}</p>
+                        <p className="losses">Losses: {player.losses}</p>
                     </div>
                 ))}
             </div>

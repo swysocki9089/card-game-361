@@ -54,3 +54,18 @@ button:disabled {
     background-color: #ccc; 
     cursor: not-allowed;
 }
+
+/* spacing made when new players are added */
+.empty-cards {
+    height: 77px;
+}
+
+.hand-value, .wins, .losses {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 18px;
+}
+
+.hand-value {
+    color: #333;
+}
