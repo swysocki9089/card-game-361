@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, {useEffect, useState} from 'react';
 import BlackjackCard from '../utils/blackjackCard';
 import './blackjack.css';
 
@@ -85,9 +85,6 @@ const Blackjack = () => {
         setPlayers(players.map(player =>
             player.id === playerId ? { ...player, hasStood: true } : player
         ));
-        if (players.every(player => player.hasStood || player.isBusted)) {
-            dealerTurn();
-        }
     };
 
     const dealerTurn = () => {
@@ -135,6 +132,12 @@ const Blackjack = () => {
         setPlayers(resetPlayers);
         setCardsDealt(false);
     };
+
+    useEffect(() => {
+        if (cardsDealt && players.every(player => player.hasStood || player.isBusted)) {
+            dealerTurn();
+        }
+    }, [players]);
 
     return (
         <div className="blackjack-game centered">
