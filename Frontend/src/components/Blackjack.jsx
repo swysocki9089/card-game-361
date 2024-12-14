@@ -128,20 +128,6 @@ const Blackjack = () => {
         }
     };
 
-    const resetGame = () => {
-        const resetPlayers = players.map(player => ({
-            ...player,
-            cards: [],
-            hasStood: false,
-            isBusted: false,
-            result: ''
-        }));
-        setDealerCards([]);
-        setDealerBusted(false);
-        setPlayers(resetPlayers);
-        setCardsDealt(false);
-    };
-
     useEffect(() => {
         if (cardsDealt && players.every(player => player.hasStood || player.isBusted)) {
             dealerTurn();
@@ -183,9 +169,8 @@ const Blackjack = () => {
                     </div>
                 ))}
             </div>
-            <button onClick={dealCards}>Deal Cards</button>
+            <button onClick={dealCards} disabled={cardsDealt}>Deal Cards</button>
             <button onClick={addPlayer} disabled={cardsDealt}>Add Player</button>
-            <button onClick={resetGame}>New Game</button>
         </div>
     );
 };
