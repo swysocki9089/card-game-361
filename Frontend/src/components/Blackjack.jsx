@@ -161,12 +161,8 @@ const Blackjack = () => {
                             )}
                         </div>
                         <p className="hand-value">Hand Value: {calculateHandValue(player.cards)}</p>
-                        {cardsDealt && (
-                            <>
-                                <button onClick={() => hit(player.id)} disabled={player.hasStood || player.isBusted}>Hit</button>
-                                <button onClick={() => stand(player.id)} disabled={player.hasStood || player.isBusted}>Stand</button>
-                            </>
-                        )}
+                        <button onClick={() => hit(player.id)} disabled={!cardsDealt || player.hasStood || player.isBusted}>Hit</button>
+                        <button onClick={() => stand(player.id)} disabled={!cardsDealt || player.hasStood || player.isBusted}>Stand</button>
                         <button onClick={() => removePlayer(player.id)} disabled={cardsDealt || players.length <= 1}>Remove Player</button>
                         {player.isBusted && <p>Busted</p>}
                         {player.result && <p>{player.result}</p>}
