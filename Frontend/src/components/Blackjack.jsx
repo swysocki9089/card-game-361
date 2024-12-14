@@ -5,7 +5,7 @@ import './blackjack.css';
 const Blackjack = () => {
     const [dealerCards, setDealerCards] = useState([]);
     const [dealerBusted, setDealerBusted] = useState(false);
-    const [players, setPlayers] = useState([{ id: 1, cards: [], hasStood: false, isBusted: false, result: '' }]);
+    const [players, setPlayers] = useState([{ id: 1, cards: [], hasStood: false, isBusted: false, result: '', wins: 0, losses: 0 }]);
     const [cardsDealt, setCardsDealt] = useState(false);
     const [nextPlayerId, setNextPlayerId] = useState(2);
 
@@ -58,7 +58,7 @@ const Blackjack = () => {
 
     const addPlayer = () => {
         if (players.length < 4) {
-            const newPlayer = { id: nextPlayerId, cards: [], hasStood: false, isBusted: false, result: '' };
+            const newPlayer = { id: nextPlayerId, cards: [], hasStood: false, isBusted: false, result: '', wins: 0, losses: 0 };
             setPlayers([...players, newPlayer]);
             setNextPlayerId(nextPlayerId + 1);
         } else {
@@ -99,22 +99,31 @@ const Blackjack = () => {
             setDealerBusted(true);
             setPlayers(players.map(player => ({
                 ...player,
-                result: player.isBusted ? 'Busted' : 'Win'
+                result: player.isBusted ? 'Lose' : 'Win',
+                wins: player.isBusted ? player.wins : player.wins + 1,
+                losses: player.isBusted ? player.losses + 1 : player.losses
             })));
         } else {
             setPlayers(players.map(player => {
                 const playerValue = calculateHandValue(player.cards);
                 let result = '';
-                if (player.isBusted) {
-                    result = 'Busted';
-                } else if (playerValue > dealerValue) {
-                    result = 'Win';
-                } else if (playerValue < dealerValue) {
-                    result = 'Lose';
+                let wins = player.wins;
+                let losses = player.losses;
+                if (!player.isBusted) {
+                    if (playerValue > dealerValue) {
+                        result = 'Win';
+                        wins += 1;
+                    } else if (playerValue < dealerValue) {
+                        result = 'Lose';
+                        losses += 1;
+                    } else {
+                        result = 'Push';
+                    }
                 } else {
-                    result = 'Push';
+                    result = 'Lose';
+                    losses += 1;
                 }
-                return { ...player, result };
+                return { ...player, result, wins, losses };
             }));
         }
     };
@@ -136,6 +145,7 @@ const Blackjack = () => {
     useEffect(() => {
         if (cardsDealt && players.every(player => player.hasStood || player.isBusted)) {
             dealerTurn();
+            setCardsDealt(false); //only call the dealer once
         }
     }, [players]);
 
@@ -168,6 +178,8 @@ const Blackjack = () => {
                         <button onClick={() => removePlayer(player.id)} disabled={cardsDealt || players.length <= 1}>Remove Player</button>
                         {player.isBusted && <p>Busted!</p>}
                         {player.result && <p>{player.result}</p>}
+                        <p>Wins: {player.wins}</p>
+                        <p>Losses: {player.losses}</p>
                     </div>
                 ))}
             </div>
