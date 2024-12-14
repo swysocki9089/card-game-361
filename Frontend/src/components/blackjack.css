@@ -19,6 +19,7 @@
     border: 2px solid #333;
     border-radius: 8px;
     background-color: #f9f9f9;
+    min-width: 300px;
 }
 
 .player-areas {
@@ -68,12 +69,22 @@ button:disabled {
     height: 77px;
 }
 
-.hand-value, .wins, .losses {
+.hand-value, .wins, .losses{
     font-size: 18px;
     font-weight: bold;
     margin-top: 18px;
 }
 
+/* spacing to keep div space neutral */
+.invisible-text {
+    visibility: hidden;
+}
+
 .hand-value {
     color: #333;
+}
+
+.win-condition {
+    font-weight: bold;
+    font-size: 18px; 
 }

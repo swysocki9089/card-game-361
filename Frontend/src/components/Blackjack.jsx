@@ -99,7 +99,7 @@ const Blackjack = () => {
             setDealerBusted(true);
             setPlayers(players.map(player => ({
                 ...player,
-                result: player.isBusted ? 'Lose' : 'Win',
+                result: player.isBusted ? 'You Lose!' : 'You Win!',
                 wins: player.isBusted ? player.wins : player.wins + 1,
                 losses: player.isBusted ? player.losses + 1 : player.losses
             })));
@@ -111,16 +111,16 @@ const Blackjack = () => {
                 let losses = player.losses;
                 if (!player.isBusted) {
                     if (playerValue > dealerValue) {
-                        result = 'Win!';
+                        result = 'You Win!';
                         wins += 1;
                     } else if (playerValue < dealerValue) {
-                        result = 'Lose';
+                        result = 'You Lose!';
                         losses += 1;
                     } else {
                         result = 'Push';
                     }
                 } else {
-                    result = 'Lose';
+                    result = 'You Lose!';
                     losses += 1;
                 }
                 return { ...player, result, wins, losses };
@@ -145,7 +145,7 @@ const Blackjack = () => {
                     ))}
                 </div>
                 <p className="hand-value">Hand Value: {calculateHandValue(dealerCards.filter(card => card.isFlipped))}</p>
-                {dealerBusted && <p>Dealer Busted!</p>}
+                {dealerBusted ? <p className="win-condition">Bust!</p> : <p className="invisible-text win-condition">Bust!</p>}
             </div>
             <div className="player-areas">
                 {players.map(player => (
@@ -164,8 +164,8 @@ const Blackjack = () => {
                         <button onClick={() => hit(player.id)} disabled={!cardsDealt || player.hasStood || player.isBusted}>Hit</button>
                         <button onClick={() => stand(player.id)} disabled={!cardsDealt || player.hasStood || player.isBusted}>Stand</button>
                         <button onClick={() => removePlayer(player.id)} disabled={cardsDealt || players.length <= 1}>Remove Player</button>
-                        {player.isBusted && <p>Busted</p>}
-                        {player.result && <p>{player.result}</p>}
+                        {player.isBusted ? <p className="win-condition">Bust!</p> : player.result ? <p className="win-condition">{player.result}</p> 
+                            : <p className="invisible-text win-condition">Result</p>}
                         <p className="wins">Wins: {player.wins}</p>
                         <p className="losses">Losses: {player.losses}</p>
                     </div>
