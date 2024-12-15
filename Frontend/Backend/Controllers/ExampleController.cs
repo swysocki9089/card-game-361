@@ -25,6 +25,14 @@ namespace Backend.Controllers
             return Ok(users);
         }
 
+        // GET: api/Users/{username}/{password}
+        [HttpGet("{username}/{password}")]
+        public ActionResult<int> VerifyUserLogin(string username, string password)
+        {
+            int status = _userData.VerifyUserByUsernameAndPassword(username, password);
+            return Ok(status);
+        }
+
         // POST: api/Users
         [HttpPost]
         public IActionResult InsertUser([FromBody] User user)

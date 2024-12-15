@@ -106,7 +106,8 @@ namespace Backend.Data
                 {
                     while (reader.Read())
                     {
-                        reader.GetInt32(0),
+                        users.Add(new User(
+                            reader.GetInt32(0),
                             reader.GetString(1),
                             reader.GetString(2),
                             reader.IsDBNull(3) ? null : reader.GetString(3),
@@ -118,6 +119,29 @@ namespace Backend.Data
             }
 
             return users;
+        }
+
+        public int VerifyUserByUsernameAndPassword(string username, string password)
+        {
+            string query = "SELECT 1 FROM User_Table WHERE username = @username AND passHash = @password;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@password", password);
+
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return reader.GetInt32(0);
+                    }
+                }
+            }
+
+            return 0;
         }
     }
 }
