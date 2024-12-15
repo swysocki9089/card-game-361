@@ -94,15 +94,19 @@ main {
 
 .tableau {
     display: flex;
-    justify-content: space-around;
-    width: 70%;
+    justify-content: flex-start;
+    width: min-content;
 }
 
 .tableau-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0 5px;
+    margin: 0 10px;
+}
+
+.foundation {
+    margin-right: 20px;
 }
 
 .card {
