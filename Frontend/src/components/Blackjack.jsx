@@ -1,8 +1,7 @@
-﻿// Frontend/src/components/Blackjack.jsx
-import React, { useEffect, useState } from 'react';
-import BlackjackCard from '../utils/blackjack/blackjackCard';
+﻿import React, { useEffect, useState } from 'react';
+import BlackjackCard, { newCard, calculateHandValue } from '../utils/blackjack/blackjackCard';
 import { addPlayer, removePlayer } from '../utils/blackjack/playerManagement';
-import { hit, stand } from '../utils/blackjack/gameActions';
+import { hit, stand, dealCards } from '../utils/blackjack/gameActions';
 import './blackjack.css';
 
 const Blackjack = () => {
@@ -11,53 +10,6 @@ const Blackjack = () => {
     const [players, setPlayers] = useState([{ id: 1, cards: [], hasStood: false, isBusted: false, result: '', wins: 0, losses: 0 }]);
     const [cardsDealt, setCardsDealt] = useState(false);
     const [nextPlayerId, setNextPlayerId] = useState(2);
-
-    const newCard = () => {
-        const suit = ['♠', '♣', '♥', '♦'][Math.floor(Math.random() * 4)];
-        const value = Math.floor(Math.random() * 13) + 1;
-        const displayValue = value === 1 ? 'A' : value > 10 ? ['J', 'Q', 'K'][value - 11] : value;
-        return {
-            suit,
-            value: displayValue,
-            isFlipped: true
-        };
-    };
-
-    const calculateHandValue = (cards) => {
-        let value = 0;
-        let aces = 0;
-        cards.forEach(card => {
-            if (card.value === 'A') {
-                aces += 1;
-                value += 11;
-            } else if (['J', 'Q', 'K'].includes(card.value)) {
-                value += 10;
-            } else {
-                value += parseInt(card.value, 10);
-            }
-        });
-        while (value > 21 && aces > 0) {
-            value -= 10;
-            aces -= 1;
-        }
-        return value;
-    };
-
-    const dealCards = () => {
-        const newDealerCards = [newCard(), { ...newCard(), isFlipped: false }];
-        const newPlayers = players.map(player => ({
-            ...player,
-            cards: [newCard(), newCard()],
-            hasStood: false,
-            isBusted: false,
-            result: ''
-        }));
-
-        setDealerCards(newDealerCards);
-        setDealerBusted(false);
-        setPlayers(newPlayers);
-        setCardsDealt(true);
-    };
 
     const dealerTurn = () => {
         let newDealerCards = [...dealerCards];
@@ -139,7 +91,7 @@ const Blackjack = () => {
                             )}
                         </div>
                         <p className="hand-value">Hand Value: {calculateHandValue(player.cards)}</p>
-                        <button onClick={() => hit(players, player.id, newCard, calculateHandValue, setPlayers)}
+                        <button onClick={() => hit(players, player.id, setPlayers)}
                                 disabled={!cardsDealt || player.hasStood || player.isBusted}>Hit
                         </button>
                         <button onClick={() => stand(players, player.id, setPlayers)}
@@ -156,7 +108,7 @@ const Blackjack = () => {
                     </div>
                 ))}
             </div>
-            <button onClick={dealCards} disabled={cardsDealt}>Deal Cards</button>
+            <button onClick={() => dealCards(players, setDealerCards, setDealerBusted, setPlayers, setCardsDealt)} disabled={cardsDealt}>Deal Cards</button>
             <button onClick={() => addPlayer(players, nextPlayerId, setPlayers, setNextPlayerId)} disabled={cardsDealt}>Add Player</button>
         </div>
     );
