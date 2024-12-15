@@ -2,13 +2,13 @@
 
 
 function Home() {
-    const [data, setData] = useState(null); // State to store API response
+    const [items, setItems] = useState([]); // State to store API response
     const [loading, setLoading] = useState(true); // State for loading status
     const [error, setError] = useState(null); // State for error handling
 
     useEffect(() => {
         // Fetch data from the API
-        fetch('http://localhost:5161/api/example/data')
+        fetch('http://localhost:5215/api/Users')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -16,7 +16,7 @@ function Home() {
                 return response.json(); // Parse response as JSON
             })
             .then(data => {
-                setData(data); // Save data in state
+                setItems(data); // Save data in state
                 setLoading(false); // Set loading to false
             })
             .catch(err => {
@@ -32,7 +32,18 @@ function Home() {
     return (
         <div>
             <h2>Home Page</h2>
-            <p>{data?.message || 'No data available'}</p>
+            <ul>
+                {items.map(item => (
+                    <li key={item.userID}>
+                        <h3>{item.username}</h3>
+                        <p>{item.passwordHash}</p>
+                        <p>{item.email}</p>
+                        <p>{item.creationDate}</p>
+                        <p>{item.lastLogin}</p>
+
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }

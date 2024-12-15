@@ -1,96 +1,75 @@
-// Controllers/MyEntitiesController.cs
 using Backend.Data;
 using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MyEntitiesController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly UserData _userData;
 
-        public MyEntitiesController(ApplicationDbContext context)
+        public UsersController(IConfiguration configuration)
         {
-            _context = context;
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
+            _userData = new UserData(connectionString);
         }
 
-        // GET: api/MyEntities
+        // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MyEntity>>> GetMyEntities()
+        public ActionResult<List<User>> GetUsers()
         {
-            return await _context.MyEntities.ToListAsync();
+            var users = _userData.GetUsers();
+            return Ok(users);
         }
 
-        // GET: api/MyEntities/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MyEntity>> GetMyEntity(int id)
+        // GET: api/Users/{username}/{password}
+        [HttpGet("{username}/{password}")]
+        public ActionResult<int> VerifyUserLogin(string username, string password)
         {
-            var myEntity = await _context.MyEntities.FindAsync(id);
-
-            if (myEntity == null)
-            {
-                return NotFound();
-            }
-
-            return myEntity;
+            int status = _userData.VerifyUserByUsernameAndPassword(username, password);
+            return Ok(status);
         }
 
-        // POST: api/MyEntities
+        // POST: api/Users
         [HttpPost]
-        public async Task<ActionResult<MyEntity>> PostMyEntity(MyEntity myEntity)
+        public IActionResult InsertUser([FromBody] User user)
         {
-            _context.MyEntities.Add(myEntity);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetMyEntity), new { id = myEntity.Id }, myEntity);
+            _userData.InsertUser(user);
+            return CreatedAtAction(nameof(GetUsers), new { id = user.userID }, user);
         }
 
-        // PUT: api/MyEntities/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMyEntity(int id, MyEntity myEntity)
+        // DELETE: api/Users/{id}
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(int id)
         {
-            if (id != myEntity.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(myEntity).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.MyEntities.Any(e => e.Id == id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _userData.DeleteUser(id);
             return NoContent();
         }
 
-        // DELETE: api/MyEntities/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMyEntity(int id)
+        // PATCH: api/Users/{id}/username
+        [HttpPatch("{id}/username")]
+        public IActionResult UpdateUsername(int id, [FromBody] string username)
         {
-            var myEntity = await _context.MyEntities.FindAsync(id);
-            if (myEntity == null)
-            {
-                return NotFound();
-            }
+            _userData.UpdateUsername(id, username);
+            return NoContent();
+        }
 
-            _context.MyEntities.Remove(myEntity);
-            await _context.SaveChangesAsync();
+        // PATCH: api/Users/{id}/password
+        [HttpPatch("{id}/password")]
+        public IActionResult UpdatePassword(int id, [FromBody] string passHash)
+        {
+            _userData.UpdatePasswordHash(id, passHash);
+            return NoContent();
+        }
 
+        // PATCH: api/Users/{id}/email
+        [HttpPatch("{id}/email")]
+        public IActionResult UpdateEmail(int id, [FromBody] string email)
+        {
+            _userData.UpdateEmail(id, email);
             return NoContent();
         }
     }
