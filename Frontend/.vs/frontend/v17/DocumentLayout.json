@@ -1,0 +1,126 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F471083D-A365-42B8-886D-D1013BD13DA5}|frontend.esproj|c:\\users\\wysoc\\documents\\github\\card-game-361\\frontend\\backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{F471083D-A365-42B8-886D-D1013BD13DA5}|frontend.esproj|solutionrelative:backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F471083D-A365-42B8-886D-D1013BD13DA5}|frontend.esproj|c:\\users\\wysoc\\documents\\github\\card-game-361\\frontend\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F471083D-A365-42B8-886D-D1013BD13DA5}|frontend.esproj|solutionrelative:backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F471083D-A365-42B8-886D-D1013BD13DA5}|frontend.esproj|c:\\users\\wysoc\\documents\\github\\card-game-361\\frontend\\backend\\controllers\\examplecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F471083D-A365-42B8-886D-D1013BD13DA5}|frontend.esproj|solutionrelative:backend\\controllers\\examplecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F471083D-A365-42B8-886D-D1013BD13DA5}|frontend.esproj|c:\\users\\wysoc\\documents\\github\\card-game-361\\frontend\\backend\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F471083D-A365-42B8-886D-D1013BD13DA5}|frontend.esproj|solutionrelative:backend\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F471083D-A365-42B8-886D-D1013BD13DA5}|frontend.esproj|c:\\users\\wysoc\\documents\\github\\card-game-361\\frontend\\backend\\models\\myentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F471083D-A365-42B8-886D-D1013BD13DA5}|frontend.esproj|solutionrelative:backend\\models\\myentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F471083D-A365-42B8-886D-D1013BD13DA5}|frontend.esproj|c:\\users\\wysoc\\documents\\github\\card-game-361\\frontend\\backend\\backend.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{F471083D-A365-42B8-886D-D1013BD13DA5}|frontend.esproj|solutionrelative:backend\\backend.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Backend.http",
+              "DocumentMoniker": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\Backend\\Backend.http",
+              "RelativeDocumentMoniker": "Backend\\Backend.http",
+              "ToolTip": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\Backend\\Backend.http",
+              "RelativeToolTip": "Backend\\Backend.http",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2024-12-11T06:38:47.513Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ExampleController.cs",
+              "DocumentMoniker": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\Backend\\Controllers\\ExampleController.cs",
+              "RelativeDocumentMoniker": "Backend\\Controllers\\ExampleController.cs",
+              "ToolTip": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\Backend\\Controllers\\ExampleController.cs",
+              "RelativeToolTip": "Backend\\Controllers\\ExampleController.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAAGAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-11T06:34:23.516Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\Backend\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Backend\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\Backend\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Backend\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-11T06:32:54.849Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MyEntity.cs",
+              "DocumentMoniker": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\Backend\\Models\\MyEntity.cs",
+              "RelativeDocumentMoniker": "Backend\\Models\\MyEntity.cs",
+              "ToolTip": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\Backend\\Models\\MyEntity.cs",
+              "RelativeToolTip": "Backend\\Models\\MyEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-11T06:30:23.779Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\Backend\\appsettings.json",
+              "RelativeDocumentMoniker": "Backend\\appsettings.json",
+              "ToolTip": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\Backend\\appsettings.json",
+              "RelativeToolTip": "Backend\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-12-11T06:29:04.085Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\Backend\\Program.cs",
+              "RelativeDocumentMoniker": "Backend\\Program.cs",
+              "ToolTip": "C:\\Users\\wysoc\\Documents\\GitHub\\card-game-361\\Frontend\\Backend\\Program.cs",
+              "RelativeToolTip": "Backend\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-11T06:27:18.873Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
