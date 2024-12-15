@@ -3,15 +3,12 @@ using Backend.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
 
-// Register the DbContext with the connection string from appsettings.json
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Add configuration to access appsettings.json
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 var app = builder.Build();
 
-app.MapControllers(); // Map controllers to endpoints
-
+app.MapControllers();
 app.Run();
