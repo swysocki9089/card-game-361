@@ -1,4 +1,4 @@
-﻿import gameReducer from '../src/utils/gameReducer';
+﻿import gameReducer from '../src/utils//solitaire/gameReducer';
 
 describe('gameReducer', () => {
     const initialState = {
