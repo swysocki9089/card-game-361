@@ -1,4 +1,4 @@
-﻿import { newCard, calculateHandValue } from './blackjackCard';
+﻿import { newCard, calculateHandValue } from './cardManagement';
 
 export const hit = (players, playerId, setPlayers) => {
     setPlayers(players.map(player => {

@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import BlackjackCard, { newCard, calculateHandValue } from '../utils/blackjack/blackjackCard';
+import BlackjackCard, { newCard, calculateHandValue } from '../utils/blackjack/cardManagement';
 import { addPlayer, removePlayer } from '../utils/blackjack/playerManagement';
 import { hit, stand, dealCards } from '../utils/blackjack/gameActions';
 import './blackjack.css';
