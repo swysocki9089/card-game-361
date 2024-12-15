@@ -1,5 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
-import BlackjackCard from '../utils/blackjackCard';
+import BlackjackCard, { newCard, calculateHandValue } from '../utils/blackjack/cardManagement';
+import { addPlayer, removePlayer } from '../utils/blackjack/playerManagement';
+import { hit, stand, dealCards } from '../utils/blackjack/gameActions';
 import './blackjack.css';
 
 const Blackjack = () => {
@@ -8,84 +10,6 @@ const Blackjack = () => {
     const [players, setPlayers] = useState([{ id: 1, cards: [], hasStood: false, isBusted: false, result: '', wins: 0, losses: 0 }]);
     const [cardsDealt, setCardsDealt] = useState(false);
     const [nextPlayerId, setNextPlayerId] = useState(2);
-
-    const newCard = () => {
-        const suit = ['♠', '♣', '♥', '♦'][Math.floor(Math.random() * 4)];
-        const value = Math.floor(Math.random() * 13) + 1;
-        const displayValue = value === 1 ? 'A' : value > 10 ? ['J', 'Q', 'K'][value - 11] : value;
-        return {
-            suit,
-            value: displayValue,
-            isFlipped: true
-        };
-    };
-
-    const calculateHandValue = (cards) => {
-        let value = 0;
-        let aces = 0;
-        cards.forEach(card => {
-            if (card.value === 'A') {
-                aces += 1;
-                value += 11;
-            } else if (['J', 'Q', 'K'].includes(card.value)) {
-                value += 10;
-            } else {
-                value += parseInt(card.value, 10);
-            }
-        });
-        while (value > 21 && aces > 0) {
-            value -= 10;
-            aces -= 1;
-        }
-        return value;
-    };
-
-    const dealCards = () => {
-        const newDealerCards = [newCard(), { ...newCard(), isFlipped: false }];
-        const newPlayers = players.map(player => ({
-            ...player,
-            cards: [newCard(), newCard()],
-            hasStood: false,
-            isBusted: false,
-            result: ''
-        }));
-
-        setDealerCards(newDealerCards);
-        setDealerBusted(false);
-        setPlayers(newPlayers);
-        setCardsDealt(true);
-    };
-
-    const addPlayer = () => {
-        if (players.length < 4) {
-            const newPlayer = { id: nextPlayerId, cards: [], hasStood: false, isBusted: false, result: '', wins: 0, losses: 0 };
-            setPlayers([...players, newPlayer]);
-            setNextPlayerId(nextPlayerId + 1);
-        } else {
-            alert('Maximum number of players is 4');
-        }
-    };
-
-    const removePlayer = (playerId) => {
-        setPlayers(players.filter(player => player.id !== playerId));
-    };
-
-    const hit = (playerId) => {
-        setPlayers(players.map(player => {
-            if (player.id === playerId) {
-                const newCards = [...player.cards, newCard()];
-                const handValue = calculateHandValue(newCards);
-                return { ...player, cards: newCards, isBusted: handValue > 21 };
-            }
-            return player;
-        }));
-    };
-
-    const stand = (playerId) => {
-        setPlayers(players.map(player =>
-            player.id === playerId ? { ...player, hasStood: true } : player
-        ));
-    };
 
     const dealerTurn = () => {
         let newDealerCards = [...dealerCards];
@@ -167,13 +91,13 @@ const Blackjack = () => {
                             )}
                         </div>
                         <p className="hand-value">Hand Value: {calculateHandValue(player.cards)}</p>
-                        <button onClick={() => hit(player.id)}
+                        <button onClick={() => hit(players, player.id, setPlayers)}
                                 disabled={!cardsDealt || player.hasStood || player.isBusted}>Hit
                         </button>
-                        <button onClick={() => stand(player.id)}
+                        <button onClick={() => stand(players, player.id, setPlayers)}
                                 disabled={!cardsDealt || player.hasStood || player.isBusted}>Stand
                         </button>
-                        <button onClick={() => removePlayer(player.id)}
+                        <button onClick={() => removePlayer(players, player.id, setPlayers)}
                                 disabled={cardsDealt || players.length <= 1}>Remove Player
                         </button>
                         {player.isBusted ? <p className="win-condition">Bust!</p> : player.result ?
@@ -184,8 +108,8 @@ const Blackjack = () => {
                     </div>
                 ))}
             </div>
-            <button onClick={dealCards} disabled={cardsDealt}>Deal Cards</button>
-            <button onClick={addPlayer} disabled={cardsDealt}>Add Player</button>
+            <button onClick={() => dealCards(players, setDealerCards, setDealerBusted, setPlayers, setCardsDealt)} disabled={cardsDealt}>Deal Cards</button>
+            <button onClick={() => addPlayer(players, nextPlayerId, setPlayers, setNextPlayerId)} disabled={cardsDealt}>Add Player</button>
         </div>
     );
 };
