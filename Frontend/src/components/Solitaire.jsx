@@ -1,13 +1,13 @@
 ﻿import React, { useReducer, useEffect, useCallback, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import createDeck from '../utils/deck';
-import shuffleDeck from '../utils/shuffle';
-import gameReducer from '../utils/gameReducer';
-import Popup from '../utils/popup';
-import Card from '../utils/card';
-import TableauColumn from '../utils/tableau';
-import FoundationPile from '../utils/foundation';
+import createDeck from '../utils/solitaire/deck';
+import shuffleDeck from '../utils/solitaire/shuffle';
+import gameReducer from '../utils/solitaire/gameReducer';
+import Popup from '../utils/solitaire/popup';
+import Card from '../utils/solitaire/card';
+import TableauColumn from '../utils/solitaire/tableau';
+import FoundationPile from '../utils/solitaire/foundation';
 
 //initial game state
 const initialState = {

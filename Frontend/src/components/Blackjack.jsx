@@ -1,204 +1,115 @@
-﻿//Many sections adapted by bgreiner2 from the Solitaire.jsx file authored by TheDevChuck
-import React, { useReducer, useCallback, useEffect } from 'react';
-import createDeck from '../utils/deck';
-import shuffleDeck from '../utils/shuffle';
-import getCardUnicode from '../utils/cardUnicode';
+﻿import React, { useEffect, useState } from 'react';
+import BlackjackCard, { newCard, calculateHandValue } from '../utils/blackjack/cardManagement';
+import { addPlayer, removePlayer } from '../utils/blackjack/playerManagement';
+import { hit, stand, dealCards } from '../utils/blackjack/gameActions';
+import './blackjack.css';
 
-// Initial game state
-const initialState = {
-    deck: [], // The shuffled deck of cards
-    playerHand: [], // Player's hand
-    playerScore: 0, // Player's score
-    dealerHand: [], // Dealer's hand
-    dealerScore: 0, // Dealer's score
-    gameStatus: 'NOT_STARTED' // Status of the game ('NOT_STARTED', 'IN_PROGRESS', 'PLAYER_WINS', 'DEALER_WINS', 'TIE')
-};
-
-// Reducer function to handle game state transitions
-const blackjackReducer = (state, action) => {
-    switch (action.type) {
-        case 'INITIALIZE_GAME': {
-            const deck = shuffleDeck(createDeck());
-            const playerHand = [deck.pop(), deck.pop()];
-            const dealerHand = [deck.pop(), deck.pop()];
-
-            return {
-                ...state,
-                deck,
-                playerHand,
-                playerScore: calculateScore(playerHand),
-                dealerHand,
-                dealerScore: calculateScore(dealerHand),
-                gameStatus: 'IN_PROGRESS'
-            };
-        }
-        
-        //Player chooses the 'Hit' button to draw another card to add to their score
-        case 'PLAYER_HIT': {
-            const newDeck = [...state.deck];
-            const playerHand = [...state.playerHand, newDeck.pop()];
-            const playerScore = calculateScore(playerHand);
-
-            if (playerScore > 21) {
-                return {
-                    ...state,
-                    deck: newDeck,
-                    playerHand,
-                    playerScore,
-                    gameStatus: 'DEALER_WINS'
-                };
-            }
-
-            return {
-                ...state,
-                deck: newDeck,
-                playerHand,
-                playerScore
-            };
-        }
-
-        //Player chooses the 'Stand' button to make no move
-        case 'PLAYER_STAND': {
-            return {
-                ...state,
-                gameStatus: 'DEALER_TURN'
-            };
-        }
-        case 'DEALER_TURN': {
-            let { dealerHand, deck } = state;
-            let dealerScore = calculateScore(dealerHand);
-
-            //dealer must continue to draw cards until their score is 17 or greater
-            while (dealerScore < 17) {
-                dealerHand = [...dealerHand, deck.pop()];
-                dealerScore = calculateScore(dealerHand);
-            }
-
-            let gameStatus;
-            if (dealerScore > 21 || state.playerScore > dealerScore) {
-                gameStatus = 'PLAYER_WINS';
-            } else if (state.playerScore < dealerScore) {
-                gameStatus = 'DEALER_WINS';
-            } else {
-                gameStatus = 'TIE';
-            }
-
-            return {
-                ...state,
-                dealerHand,
-                dealerScore,
-                gameStatus
-            };
-        }
-        default:
-            return state;
-    }
-};
-
-// Utility function to calculate the score of a hand
-const calculateScore = (hand) => {
-    let total = 0;
-    let aces = 0;
-
-    hand.forEach((card) => {
-        if (card.value === 'A') {
-            aces += 1;
-            total += 11;
-        } else if (['K', 'Q', 'J'].includes(card.value)) {
-            total += 10;
-        } else {
-            total += parseInt(card.value, 10);
-        }
-    });
-
-    //if an ace would put the total at over 21, then the value of the ace becomes 1 rather than 11
-    while (total > 21 && aces > 0) {
-        total -= 10;
-        aces -= 1;
-    }
-
-    return total;
-};
-
-//Card component to use the unicode for card icons rather than just a symbol and number
-const Card = ({ card }) => {
-    if (!card) return null;
-
-    const unicodeCard = getCardUnicode(card.value, card.suit);
-
-    // Inline styles for card rendering
-    const cardStyle = {
-        fontSize: '8em', // Adjust size
-        margin: '5px',    // Add spacing between cards
-        display: 'inline-block', // Ensure cards are displayed inline
-        textAlign: 'center', // Center align text
-        //color: '#333',    // Card color (optional)
-        //fontWeight: 'bold', // Bold text for emphasis (optional)
-    };
-
-    return (
-        <span
-            style={cardStyle}
-            role="img"
-            aria-label={`${card.value} of ${card.suit}`}
-        >
-            {String.fromCodePoint(parseInt(unicodeCard.replace('\\u{', '').replace('}', ''), 16))}
-        </span>
-    );
-};
-
-// Main Blackjack component
 const Blackjack = () => {
-    const [state, dispatch] = useReducer(blackjackReducer, initialState);
+    const [dealerCards, setDealerCards] = useState([]);
+    const [dealerBusted, setDealerBusted] = useState(false);
+    const [players, setPlayers] = useState([{ id: 1, cards: [], hasStood: false, isBusted: false, result: '', wins: 0, losses: 0 }]);
+    const [cardsDealt, setCardsDealt] = useState(false);
+    const [nextPlayerId, setNextPlayerId] = useState(2);
 
-    const initializeGame = useCallback(() => {
-        dispatch({ type: 'INITIALIZE_GAME' });
-    }, []);
-
-    const playerHit = () => {
-        dispatch({ type: 'PLAYER_HIT' });
-    };
-
-    const playerStand = () => {
-        dispatch({ type: 'PLAYER_STAND' });
-        setTimeout(() => dispatch({ type: 'DEALER_TURN' }), 500);
+    const dealerTurn = () => {
+        let newDealerCards = [...dealerCards];
+        let dealerValue = calculateHandValue(newDealerCards);
+        while (dealerValue < 17) {
+            newDealerCards.push(newCard());
+            dealerValue = calculateHandValue(newDealerCards);
+        }
+        setDealerCards(newDealerCards.map(card => ({ ...card, isFlipped: true })));
+        if (dealerValue > 21) {
+            setDealerBusted(true);
+            setPlayers(players.map(player => ({
+                ...player,
+                result: player.isBusted ? 'You Lose!' : 'You Win!',
+                wins: player.isBusted ? player.wins : player.wins + 1,
+                losses: player.isBusted ? player.losses + 1 : player.losses
+            })));
+        } else {
+            setPlayers(players.map(player => {
+                const playerValue = calculateHandValue(player.cards);
+                let result = '';
+                let wins = player.wins;
+                let losses = player.losses;
+                if (!player.isBusted) {
+                    if (playerValue > dealerValue) {
+                        result = 'You Win!';
+                        wins += 1;
+                    } else if (playerValue < dealerValue) {
+                        result = 'You Lose!';
+                        losses += 1;
+                    } else {
+                        result = 'Push';
+                    }
+                } else {
+                    result = 'You Lose!';
+                    losses += 1;
+                }
+                return { ...player, result, wins, losses };
+            }));
+        }
     };
 
     useEffect(() => {
-        initializeGame();
-    }, [initializeGame]);
+        if (cardsDealt && players.every(player => player.hasStood || player.isBusted)) {
+            dealerTurn();
+            setCardsDealt(false); //only call the dealer once
+        }
+    }, [players]);
 
     return (
-        <div className="blackjack-container">
-            <h1>Blackjack</h1>
-
-            <div className="game-area">
-                {state.gameStatus === 'NOT_STARTED' && (
-                    <button className="start-button" onClick={initializeGame}>Start Game</button>
-                )}
-
-                {state.gameStatus === 'IN_PROGRESS' && (
-                    <div className="player-area">
-                        <h2>Player's Hand ({state.playerScore})</h2>
-                        <div className="cards">{state.playerHand.map((card, i) => (<Card key={i} card={card} />))}</div>
-                        <div className="actions">
-                            <button className="hit-button" onClick={playerHit}>Hit</button>
-                            <button className="stand-button" onClick={playerStand}>Stand</button>
-                        </div>
-                    </div>
-                )}
-
-                {(state.gameStatus === 'PLAYER_WINS' ||
-                    state.gameStatus === 'DEALER_WINS' ||
-                    state.gameStatus === 'TIE') && (
-                    <div className="results-area">
-                        <h2>Game Over: {state.gameStatus.replace('_', ' ')}</h2>
-                        <h3>Dealer's Hand ({state.dealerScore})</h3>
-                        <div className="cards">{state.dealerHand.map((card, i) => (<Card key={i} card={card} />))}</div>
-                        <button className="restart-button" onClick={initializeGame}>Play Again</button>
-                    </div>
-                )}
+        <div className="blackjack-game centered">
+            <div className="dealer-area">
+                <h2>Dealer's Cards</h2>
+                <div className="cards">
+                    {dealerCards.length > 0 ? (
+                        dealerCards.map((card, index) => (
+                            <BlackjackCard key={index} card={card}/>
+                        ))
+                    ) : (
+                        <div className="empty-cards"></div>
+                    )}
+                </div>
+                <p className="hand-value">Hand
+                    Value: {calculateHandValue(dealerCards.filter(card => card.isFlipped))}</p>
+                {dealerBusted ? <p className="win-condition">Bust!</p> :
+                    <p className="invisible-text win-condition">Bust!</p>}
             </div>
+            <div className="player-areas">
+                {players.map(player => (
+                    <div key={player.id} className="player-area">
+                        <h2>Player {player.id}'s Cards</h2>
+                        <div className="cards">
+                            {player.cards.length > 0 ? (
+                                player.cards.map((card, index) => (
+                                    <BlackjackCard key={index} card={card}/>
+                                ))
+                            ) : (
+                                <div className="empty-cards"></div>
+                            )}
+                        </div>
+                        <p className="hand-value">Hand Value: {calculateHandValue(player.cards)}</p>
+                        <button onClick={() => hit(players, player.id, setPlayers)}
+                                disabled={!cardsDealt || player.hasStood || player.isBusted}>Hit
+                        </button>
+                        <button onClick={() => stand(players, player.id, setPlayers)}
+                                disabled={!cardsDealt || player.hasStood || player.isBusted}>Stand
+                        </button>
+                        <button onClick={() => removePlayer(players, player.id, setPlayers)}
+                                disabled={cardsDealt || players.length <= 1}>Remove Player
+                        </button>
+                        {player.isBusted ? <p className="win-condition">Bust!</p> : player.result ?
+                            <p className="win-condition">{player.result}</p>
+                            : <p className="invisible-text win-condition">Result</p>}
+                        <p className="wins">Wins: {player.wins}</p>
+                        <p className="losses">Losses: {player.losses}</p>
+                    </div>
+                ))}
+            </div>
+            <button onClick={() => dealCards(players, setDealerCards, setDealerBusted, setPlayers, setCardsDealt)} disabled={cardsDealt}>Deal Cards</button>
+            <button onClick={() => addPlayer(players, nextPlayerId, setPlayers, setNextPlayerId)} disabled={cardsDealt}>Add Player</button>
         </div>
     );
 };
