@@ -8,10 +8,10 @@ const Login = () => {
 
     const handleLogin = (event) => {
         event.preventDefault();
-        // Placeholder for the API call
+        //API call
         console.log('Logging in with:', { username, password });
 
-        if (username === 'admin' && password === 'admin') {
+        if (username && password) {
             console.log('Login successful');
             navigate('/');
         } else {
