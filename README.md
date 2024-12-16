@@ -65,7 +65,7 @@ Currently, two official plugins are available:
 ### 3. **Navigate to the Frontend Directory**
    - Use the command line to navigate to the **Frontend** directory:
      ```bash
-     cd Frontend
+     cd CardGamesSource
      ```
 
 ### 4. **Start the Development Server**
