@@ -1,11 +1,11 @@
-using CardGames.Interfaces;
+using Backend.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CardGames.Models
+namespace Backend.Models
 {
     public class Result : iResult
     {

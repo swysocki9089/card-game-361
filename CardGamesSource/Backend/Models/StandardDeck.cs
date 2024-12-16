@@ -1,16 +1,15 @@
-﻿using CardGames.interfaces;
-using CardGames.Interfaces;
-using CardGames.Models.Constants;
-using CardGames.Models.Utilities;
+﻿using Backend.Interfaces;
+using Backend.Models.Constants;
+using Backend.Models.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using static CardGames.Models.Constants.StandardDeckConstants;
+using static Backend.Models.Constants.StandardDeckConstants;
 
-namespace CardGames.Models
+namespace Backend.Models
 {
     public class StandardDeck : iDeck
     {

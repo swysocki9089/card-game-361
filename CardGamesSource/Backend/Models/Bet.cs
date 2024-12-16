@@ -9,6 +9,7 @@ namespace Backend.Models
 {
     public class Bet : iBet
     {
+        public int betID { get; set; }
         public int userID { get; set; }
         public int gameID { get; set; }
         public int betAmount { get; set; }

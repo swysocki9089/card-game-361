@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CardGames.Interfaces
+namespace Backend.Interfaces
 {
     public interface iBalance
     {

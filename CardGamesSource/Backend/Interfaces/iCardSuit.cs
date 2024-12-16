@@ -1,5 +1,5 @@
 ﻿using System;
-namespace CardGames.Interfaces
+namespace Backend.Interfaces
 {
     public interface iCardSuit
     {

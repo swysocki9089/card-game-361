@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CardGames.Models.Constants
+namespace Backend.Models.Constants
 {
     public static class StandardCardConstants
     {

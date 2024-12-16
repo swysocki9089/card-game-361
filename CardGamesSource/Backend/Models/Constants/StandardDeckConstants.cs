@@ -1,12 +1,12 @@
-﻿using CardGames.Interfaces;
+﻿using Backend.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static CardGames.Models.Constants.StandardCardConstants;
+using static Backend.Models.Constants.StandardCardConstants;
 
-namespace CardGames.Models.Constants
+namespace Backend.Models.Constants
 {
     public class StandardDeckConstants
     {

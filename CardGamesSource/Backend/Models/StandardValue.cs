@@ -1,7 +1,7 @@
 ﻿using System;
-using CardGames.Interfaces;
+using Backend.Interfaces;
 
-namespace CardGames.Models
+namespace Backend.Models
 {
 	public class StandardValue : iCardValue
 	{

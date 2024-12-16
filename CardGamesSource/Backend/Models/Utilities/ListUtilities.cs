@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CardGames.Models.Utilities
+namespace Backend.Models.Utilities
 {
     public static class ListUtilities
     {

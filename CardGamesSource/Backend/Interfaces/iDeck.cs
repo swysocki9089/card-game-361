@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Backend.interfaces
+namespace Backend.Interfaces
 {
     public interface iDeck
     {
