@@ -60,11 +60,12 @@ Currently, two official plugins are available:
      ```
    - Alternatively you can paste the project URL into Visual Studio in the **Clone Repository** tab
 
-### 2. **Open the Developer Command Prompt**
+### 2. **Open the Developer Command Prompt** (x2) 
    - In Visual Studio, go to **Tools** → **Command Line** → **Developer Command Prompt**.
+   - Do this two times
 
 ### 3. **Navigate to the Frontend Directory**
-   - Use the command line to navigate to the **Frontend** directory:
+   - In the first command prompt, use the command line to navigate to the **CardGamesSource** directory:
      ```bash
      cd CardGamesSource
      ```
@@ -80,3 +81,12 @@ Currently, two official plugins are available:
      ```
      http://localhost:5173
      ```
+
+### 6a. **Enable the API**
+   - In the second command prompt, use the command line to navigate to the Backend directory and launch the API:
+     ```bash
+     cd CardGamesSource
+     cd Backend
+     dotnet run
+     ```
+     
