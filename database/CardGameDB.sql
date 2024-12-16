@@ -1,5 +1,5 @@
 --Database Table Creation
-
+use cardgames;
 --Check for pre-existing table, build if none exist
 BEGIN TRY
 	BEGIN

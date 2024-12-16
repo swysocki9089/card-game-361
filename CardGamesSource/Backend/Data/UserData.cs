@@ -19,7 +19,7 @@ namespace Backend.Data
         }
 
 
-        public void InsertUser(User user)
+        public void InsertUser(iUser user)
         {
             string query = "INSERT INTO User_Table (userID, username, passHash, email) VALUES (@userID, @username, @passHash, @Email)";
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -93,10 +93,10 @@ namespace Backend.Data
             }
         }
 
-        public List<User> GetUsers()
+        public List<iUser> GetUsers()
         {
             string query = "SELECT * FROM User_Table; ";
-            List<User> users = new List<User>();
+            List<iUser> users = new List<iUser>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
