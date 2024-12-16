@@ -15,8 +15,9 @@ namespace Backend.Models
         public int betAmount { get; set; }
         public int betOutcome { get; set; }
 
-        public Bet(int userID, int gameID, int betAmount, int betOutcome)
+        public Bet(int betID, int userID, int gameID, int betAmount, int betOutcome)
         {
+            this.betID = betID;
             this.userID = userID;
             this.gameID = gameID;
             this.betAmount = betAmount;

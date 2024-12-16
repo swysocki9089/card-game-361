@@ -9,17 +9,19 @@ namespace Backend.Models
 {
     public class Result : iResult
     {
+        public int resultID { get; set; }
         public int gameID { get; set; }
         public int outcome { get; set; }
         public int userID { get; set; }
-        public DateTime ResultTime { get; set; }
+        public DateTime resultTime { get; set; }
 
-        public Result(int gameID, int outcome, int userID, DateTime ResultTime)
+        public Result(int resultID, int gameID, int outcome, int userID, DateTime resultTime)
         {
+            this.resultID = resultID;
             this.gameID = gameID;
             this.outcome = outcome;
             this.userID = userID;
-            this.ResultTime = ResultTime;
+            this.resultTime = resultTime;
         }
 
         public override string ToString()
@@ -31,7 +33,7 @@ namespace Backend.Models
                 -1 => "Tie",
             };
 
-            return $"Results[gameID: {gameID}, Outcome: {outcomeString}, userID: {userID}, Time: {ResultTime}]";
+            return $"Results[gameID: {gameID}, Outcome: {outcomeString}, userID: {userID}, Time: {resultTime}]";
         }
     }
 }

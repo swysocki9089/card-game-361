@@ -8,9 +8,10 @@ namespace Backend.Interfaces
 {
     public interface iResult
     {
+        int resultID { get; set; }
         int gameID { get; set; }
         int outcome { get; set; }
         int userID { get; set; }
-        DateTime ResultTime { get; set; }
+        DateTime resultTime { get; set; }
     }
 }

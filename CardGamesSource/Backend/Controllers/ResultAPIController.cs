@@ -1,5 +1,6 @@
 using Backend.Data;
 using Backend.Models;
+using Backend.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -11,10 +12,10 @@ namespace Backend.Controllers
     {
         private readonly ResultData _resultData;
 
-        public UsersController(IConfiguration configuration)
+        public ResultsController(IConfiguration configuration)
         {
             string connectionString = configuration.GetConnectionString("DefaultConnection");
-            _userData = new UserData(connectionString);
+            _resultData = new ResultData(connectionString);
         }
 
         // GET: api/Users
