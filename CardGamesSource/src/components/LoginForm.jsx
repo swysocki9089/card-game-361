@@ -70,7 +70,7 @@ function LoginForm() {
                 <div>
                     <label htmlFor="password">Password:</label>
                     <input
-                        
+                        type="password"
                         id="password"
                         name="password"
                         value={password}
