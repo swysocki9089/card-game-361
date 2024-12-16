@@ -35,7 +35,7 @@ function LoginForm() {
             }
 
             const data = await response.json(); // Parse the response JSON
-            if (data === 1) { navigate('../Home') } // navigate if successful
+            if (data === 1) { navigate('/') } // navigate if successful
             else {
                 alert("Invalid login!"); // clear login and alert   
                 setUsername('');
