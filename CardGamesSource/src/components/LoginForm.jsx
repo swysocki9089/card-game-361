@@ -22,7 +22,7 @@ function LoginForm() {
 
         try {
             // Make API request using fetch or axios
-            const response = await fetch('http://localhost:5215/api/Users/' + username '/' + password, {
+            const response = await fetch('http://localhost:5215/api/Users/' + username + '/' + password, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
