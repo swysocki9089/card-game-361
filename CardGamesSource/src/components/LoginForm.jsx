@@ -7,8 +7,12 @@ function LoginForm() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);    
     const navigate = useNavigate();
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission
@@ -18,7 +22,7 @@ function LoginForm() {
 
         try {
             // Make API request using fetch or axios
-            const response = await fetch('http://localhost:5215/api/Users/'+username+'/'+password, {
+            const response = await fetch('http://localhost:5215/api/Users/' + username + '/' + password, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -31,14 +35,18 @@ function LoginForm() {
             }
 
             const data = await response.json(); // Parse the response JSON
-            console.log('Login successful:', data);
-            if (data === 1) { navigate('../Solitaire'); }  // navigate if successful
-
-
+            if (data === 1) { navigate('/') } // navigate if successful
+            else {
+                alert("Invalid login!"); // clear login and alert   
+                setUsername('');
+                setPassword('');
+                throw new Error("Invalid user login.");
+            }
             // Handle the successful login (store token, navigate to dashboard, etc.)
 
         } catch (error) {
             setError(error.message); // Set error state if the API call fails
+            console.log(error.message);
         } finally {
             setLoading(false); // Stop loading state
         }
