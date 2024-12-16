@@ -34,6 +34,7 @@ This project is a full-stack .NET application utilizing React for the frontend, 
 - Add online multiplayer functionality.
 - Introduce more card games.
 - improve visual effects and animations.
+- Implementation of Balances and Bets.
 
 ## Installation
 
