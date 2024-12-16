@@ -74,6 +74,10 @@ Currently, two official plugins are available:
      ```bash
      npm run dev
      ```
+     If you experience an error due to not having Vite,
+     '''npm install'''
+     and then
+     '''npm run dev'''
 
 ### 5. **Access the Application**
    - Open your web browser and paste the following URL into the search bar:
